@@ -9,7 +9,7 @@ class SimplePlayer : DoomPlayer {
 
         // If not dead: Do a search for nearby XP orbs and collect them.
         if (health > 0) {
-            ThinkerIterator orbs = ThinkerIterator.Create("XPOrb");
+            ThinkerIterator orbs = ThinkerIterator.Create("VacuumChase");
             Actor o;
             while (o = Actor(orbs.next())) {
                 if (o.target) { continue; } // Ignore orbs that have a target already

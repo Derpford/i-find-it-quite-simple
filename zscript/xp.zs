@@ -99,9 +99,9 @@ class StatBlock : Inventory {
     }
 }
 
-class XPOrb : Inventory {
+class XPOrb : VacuumChase {
     // Picking these up is handled by the StatBlock.
-    double rollrate;
+    mixin WaggleBob;
     default {
         +BRIGHT;
         +ROLLSPRITE;
@@ -114,26 +114,6 @@ class XPOrb : Inventory {
         return String.Format("XP +%d",amount);
     }
     
-    clearscope double SmoothCap(double base, double cap) {
-        // Diminishing returns on base, such that base never reaches cap.
-        // In other words, as base approaches infinity,
-        // the return value approaches cap.
-        return (atan(base / cap) / 180.) * 2 * cap;
-    }
-
-    override void Tick() {
-        // If this thing has a target, it's the thing that killed whatever dropped this, so fly toward that guy!
-        super.Tick();
-        if (target) {
-            VelIntercept(target,min(vel.length()+1,70));
-        }
-        double cappedscale = SmoothCap(0.5 + double(amount) / 100.,3);
-        scale = (cappedscale,cappedscale);
-
-        if (rollrate == 0) { rollrate = frandom(18,24); }
-        roll = sin(GetAge() * rollrate) * 15;
-    }
-
     states {
         Spawn:
             XGEM AB 5;
@@ -154,5 +134,46 @@ class XPDropHandler : EventHandler {
             orb.amount = valperorb;
             orb.Vel3DFromAngle(frandom(4,12),frandom(0,360),frandom(-20,-60));
         }
+    }
+}
+
+class VacuumChase : Inventory {
+    // For items that are supposed to vacuum to the player.
+    vector3 MixVec(vector3 a, double arate, vector3 b, double brate, double len) {
+        vector3 mix = (a.unit() * arate) + (b.unit() * brate);
+        return mix * len;
+    }
+
+    override void Tick() {
+        // If this thing has a target, that's the player who's picking this item up.
+        super.Tick();
+        if (target) {
+            VelIntercept(target,min(vel.length()+1,70));
+            vector3 center = Vec3To(target) + (0,0,target.height/2);
+            vel = MixVec(vel, 0.25, center, 0.75, vel.length());
+        }
+    }
+
+}
+
+mixin class WaggleBob {
+    // Wigl wigl.
+    double rollrate;
+
+    clearscope double SmoothCap(double base, double cap) {
+        // Diminishing returns on base, such that base never reaches cap.
+        // In other words, as base approaches infinity,
+        // the return value approaches cap.
+        return (atan(base / cap) / 180.) * 2 * cap;
+    }
+
+    override void Tick() {
+        Super.Tick();
+        if (rollrate == 0) { rollrate = frandom(18,24); }
+        roll = sin(GetAge() * rollrate) * 15;
+
+        double scalebob = (1.0 - cos(GetAge() * rollrate)) * 0.1;
+        double cappedscale = scalebob + SmoothCap(0.5 + double(amount) / 100.,3);
+        scale = (cappedscale,cappedscale);
     }
 }
