@@ -3,6 +3,7 @@ Complex? Doom?
 
 ## Guiding Principles
 - Everything should interact in some way with everything else.
+- Yes, And. Everything should be goofy, but everything should empower the player.
 - Give the player ALL the numbers.
 - Scaling, scaling, scaling.
 
