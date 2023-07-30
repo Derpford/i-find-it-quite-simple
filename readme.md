@@ -17,6 +17,7 @@ Complex? Doom?
 - Demons drop bits of Health and Armor Essence on kill, which go into your Techno-Flask! Press +USER1 to drink from ye flask when it's built up a full charge of either Health or Armor, restoring 50% health and/or 50% armor. Health and Armor bonuses are replaced with various kinds of Essence Containers, which go right into your Technoflask. Your Technoflask also automatically refills at the start of each level. 
 - 100 units of essence turns into 1 charge. However, your Technoflask can keep building up essence after it hits max charges. If you get 100 units of essence while the flask is at max charge, you *upgrade* your flask's charge cap! With the Upgrade Mania Pack, you can also find flask upgrades in the wild, as well as health and armor upgrades.
 - With the Rip N Tear Pack, you start getting Ammo Essence from enemies as well, and your Flask gains the ability to grant you 25% ammo for all weapons when you drink it while it has an ammo charge.
+- As a rule, slot 2 uses clips, slot 3 uses shells, slot 4 uses cells, and slot 5 uses rockets.
 
 
 ## Weapons
@@ -37,7 +38,7 @@ Low DPS. Infinite ammo. Good burst damage, sometimes. Exclusively drops from fod
 - Beam Pistol (RAW): Somehow converts bullets into laser blasts that rip through enemies. Does not need reloading. Drops from the cyber-troopers in Zombie Pack 3.
 
 ### SMGs/ARs
-Higher damage than pistols overall, filling a generalist role, but the high mag capacities don't come in until the late tiers. Replaces the Chaingun spawn spot.
+Higher damage than pistols overall, filling a generalist role, but the high mag capacities don't come in until the late tiers. Replaces the Chaingun spawn spot, at least until stuff like the Assault Cannon starts dropping.
 - Stock Rifle (Well Done): 25 round mag, reloads almost as fast as the pistol, fires slower than it tho. 10-15 damage per shot; rifles are better than pistols, even though they fire the same clippazines! It's more accurate than the stock pistol but slightly worse than the magnum. Altfire plays a random "Aim down the sights" voice line. Drops from rifle zombies.
 - Grenade Rifle (Medium Rare): 20 round mag, reloads as fast as stock rifle, fires slightly faster and does 15-20 damage per shot. Also has an underslung grenade launcher on altfire, which uses...30 bullets??? look, don't ask me. It's otherwise pretty much the Stock Rifle. In fact, it looks suspiciously like a recolored Stock Rifle. Rifle zombies start carrying this when you get Zombie Pack 1.
 - Demontech Rifle (Rare): 50 round mag! Finally, something that's appropriately-sized for demon killing. Fires...uh...blood. The blood rails pierce all enemies, doing 15-25 damage; great for mowing down crowds. Altfire shoots plasma blasts that deal 30 flat damage but don't pierce, which is ideal for dealing with single targets. Demon Troopers carry these, and are unlocked in Zombie Pack 2.
@@ -67,7 +68,7 @@ Weapons that direct-fire rockets and other such things. Separate from Heavy, tec
 ### Energy
 Weapons that shoot zappy things. High accuracy, fixed damage, eats ammo fast. Replaces plasma rifle spawns.
 - Plasma Gun (Well Done): Shoots a perfectly accurate stream of blue death. 80 shots in the mag, 32 damage per shot. Altfire shoots green plasma at a slower rate for 40 damage per shot, not that anybody will notice. Dropped by the Arachnotron and also by Plasma Rifle Zombies in Zombie Pack 1.
-- Tech Rifle (Medium Rare): 60-round mag; burst-fires accurate lasers that do 32 damage per shot--but the last shot of the burst also causes a laser blast on impact, for 16 damage (no falloff) in a 128 radius. Altfire fires a Big Laser that leaves the rifle in cooldown for a bit, but does 32 direct damage plus 64 damage (no falloff) in that 128 radius. Dropped by Z-Sec from the Z-Sec pack.
+- Tech Rifle (Medium Rare): 60-round mag; burst-fires accurate lasers that do 32 damage per shot--but the last shot of the burst also causes a laser blast on impact, for 16 damage (no falloff) in a 128 radius. Altfire fires a Big Laser that leaves the rifle in cooldown for a bit, but does 32 direct damage plus 64 damage (no falloff) in that 128 radius. Patented "Dirty Mag" technology makes spare mags explode when the altfire passes over them! Dropped by Z-Sec from the Z-Sec pack.
 - Railgun (Rare): Feeds directly from ammo supply. It's a railgun. Does 150 damage per shot. Primary fire rails. Secondary fire guns. (I will not elaborate.) Added by the Long-Distance Pack. Drops from certain Revenant variants if you've unlocked the Doot Pack.
 - Buster (RAW): A powerful energy weapon from an ancient warrior, a true hero who believed that even now there is hope for man. Fires bright-yellow packets of energy that explode on impact, consuming 10 cells at a time and doing 255 damage per shot in a 255-unit radius. Altfire overflows the integer, consuming all of your cell ammo in one glorious beam. Unlocked by the Mega Zandy Pack.
 
