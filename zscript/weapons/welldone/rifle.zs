@@ -9,7 +9,7 @@ class StockRifle : SimpleWeapon {
         Weapon.AmmoType1 "Clip";
         SimpleWeapon.AmmoDrop "Clip";
         Weapon.AmmoUse1 1;
-        Weapon.AmmoGive1 25;
+        Weapon.AmmoGive1 15;
         Inventory.PickupMessage "Scooped up a Stock Rifle!";
     }
 

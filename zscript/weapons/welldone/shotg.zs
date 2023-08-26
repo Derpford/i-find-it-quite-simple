@@ -9,7 +9,7 @@ class SimpleShotgun : SimpleWeapon replaces Shotgun {
         Weapon.AmmoType1 "Shell";
         SimpleWeapon.AmmoDrop "Shell";
         Weapon.AmmoUse1 1;
-        Weapon.AmmoGive1 8;
+        Weapon.AmmoGive1 4;
         Inventory.PickupMessage "Snagged a shotgun!";
     }
 

@@ -27,7 +27,7 @@ class SimpleHud : BaseStatusBar {
 		int ltxtflags = DI_SCREEN_LEFT_BOTTOM|DI_TEXT_ALIGN_LEFT;
 		int rtxtflags = DI_SCREEN_RIGHT_BOTTOM|DI_TEXT_ALIGN_RIGHT;
 		int cbarflags = DI_SCREEN_CENTER_BOTTOM|DI_ITEM_CENTER_BOTTOM;
-		int ctxtflags = DI_SCREEN_CENTER_BOTTOM|DI_TEXT_ALIGN_LEFT;
+		int ctxtflags = DI_SCREEN_CENTER_BOTTOM|DI_TEXT_ALIGN_CENTER;
 		int crtxtflags = DI_SCREEN_CENTER_BOTTOM|DI_TEXT_ALIGN_RIGHT;
 
         if (plr && sb) {
@@ -88,6 +88,16 @@ class SimpleHud : BaseStatusBar {
 					DrawInventoryIcon(a2real,a2pos - aiconoffs,rbarflags,scale:aiconscl);
 					int amt = GetAmount(a2.GetClassName());
                     DrawString(HealthFont,FormatNumber(amt),a2pos,rtxtflags,Font.CR_RED,scale:hscl);
+                }
+
+                // Magazine.
+                if (wpn is "SimpleWeapon") {
+                    let sw = SimpleWeapon(wpn);
+                    int m = sw.mag;
+                    if (a1 && wpn.ammouse1 > 0) {
+                        m = min(m,GetAmount(a1.GetClassName()));
+                    }
+                    DrawString(HealthFont,FormatNumber(m),(0,-96),ctxtflags,Font.CR_WHITE,scale:hscl);
                 }
             }
             
