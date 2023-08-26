@@ -1,8 +1,9 @@
 class SimplePistol : SimpleWeapon {
     default {
+        Tag "Starting Pistol";
         SimpleWeapon.Mag 10;
         SimpleWeapon.Category "PISTOL", "COMMON";
-        Weapon.SlotNumber 2;
+        Weapon.SlotNumber 1;
     }
 
     action void FirePistol() {
