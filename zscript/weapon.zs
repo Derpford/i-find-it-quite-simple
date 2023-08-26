@@ -20,7 +20,8 @@ class SimpleWeapon : Weapon {
         super.PostBeginPlay();
         mag = magcap;
         if (!owner && ammodrop) {
-
+            vector3 offs = (frandom(-12,12),frandom(-12,12),frandom(-12,12));
+            Spawn(ammodrop,pos + offs);
         }
     }
 

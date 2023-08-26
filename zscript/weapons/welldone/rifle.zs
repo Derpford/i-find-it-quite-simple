@@ -7,6 +7,7 @@ class StockRifle : SimpleWeapon {
 
         Weapon.SlotNumber 2;
         Weapon.AmmoType1 "Clip";
+        SimpleWeapon.AmmoDrop "Clip";
         Weapon.AmmoUse1 1;
         Weapon.AmmoGive1 25;
         Inventory.PickupMessage "Scooped up a Stock Rifle!";
