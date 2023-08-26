@@ -2,7 +2,7 @@ class SimplePistol : SimpleWeapon {
     default {
         Tag "Starting Pistol";
         SimpleWeapon.Mag 10;
-        SimpleWeapon.Category "PISTOL", "COMMON";
+        SimpleWeapon.Category "PISTOL", 0;
         Weapon.SlotNumber 1;
     }
 

@@ -2,7 +2,7 @@ class StockRifle : SimpleWeapon {
     // AIM DOWN THE SIGHTS--
     default {
         Tag "Stock Rifle";
-        SimpleWeapon.Category "RIFLE","COMMON";
+        SimpleWeapon.Category "RIFLE",0;
         SimpleWeapon.Mag 25;
 
         Weapon.SlotNumber 2;

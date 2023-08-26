@@ -1,9 +1,9 @@
-class SimpleShotgun : SimpleWeapon replaces Shotgun {
+class SimpleShotgun : SimpleWeapon {
     default {
         Tag "Shotgun";
         SimpleWeapon.TubeLoad true;
         SimpleWeapon.Mag 8;
-        SimpleWeapon.Category "SHOTGUN", "COMMON";
+        SimpleWeapon.Category "SHOTGUN",0;
 
         Weapon.SlotNumber 3;
         Weapon.AmmoType1 "Shell";
@@ -17,6 +17,7 @@ class SimpleShotgun : SimpleWeapon replaces Shotgun {
         // TODO
         A_FireBullets(3,2,7,random(7,15),flags:FBF_USEAMMO|FBF_NORANDOM);
         A_StartSound("weapons/sshotf");
+        A_GunFlash();
         invoker.mag--;
     }
 
@@ -55,7 +56,7 @@ class SimpleShotgun : SimpleWeapon replaces Shotgun {
         Fire:
             SHTG A 6 FireShotgun();
         AltFire:
-            SHTG B 3 A_StartSound("misc/w_pkup",2);
+            SHTG B 3 A_StartSound("misc/w_pkup",3);
             SHTG C 4;
             SHTG D 4;
             SHTG CB 3;

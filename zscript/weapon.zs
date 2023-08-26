@@ -1,4 +1,4 @@
-class SimpleWeapon : Weapon {
+class SimpleWeapon : Weapon abstract {
     // I find it quite simple, actually.
     int magcap, mag; // How many shots between reloads? Duke-style reloading.
     Property Mag : magcap;
@@ -8,7 +8,7 @@ class SimpleWeapon : Weapon {
     Property AmmoDrop: ammodrop;
 
     string category; // What kind of weapon is this?
-    string rarity; // How cool is it?
+    int rarity; // How cool is it? 0 is base content.
     Property Category: category, rarity;
 
     default {
@@ -57,8 +57,12 @@ class SimpleWeapon : Weapon {
         }
     }
 
-    action void Hitscan(vector2 spread, int number, int damage) {
-        A_FireBullets(spread.x,spread.y,number,damage,flags:FBF_USEAMMO|FBF_NORANDOM);
+    action void Hitscan(vector2 spread, int number, int damage, bool ammo = true) {
+        if (ammo) {
+            A_FireBullets(spread.x,spread.y,number,damage,flags:FBF_USEAMMO|FBF_NORANDOM);
+        } else {
+            A_FireBullets(spread.x,spread.y,number,damage,flags:FBF_NORANDOM);
+        }
     }
 
     action void A_Reload(bool altammo = false) {

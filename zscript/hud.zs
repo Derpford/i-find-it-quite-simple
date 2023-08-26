@@ -1,5 +1,7 @@
 class SimpleHud : BaseStatusBar {
-    HUDFont HealthFont, StatFont;
+    HUDFont HealthFont, StatFont, SmallFont;
+
+    double invticfrac; // controls animating invbar items
 
     override void Init() {
         Super.Init();
@@ -7,6 +9,7 @@ class SimpleHud : BaseStatusBar {
 
         HealthFont = HUDFont.Create("DBIGFONT",0,false,1,1);
         StatFont = HUDFont.Create("DBIGFONT",0,false,1,1);
+        SmallFont = HUDFont.Create("CONFONT",0,false,1,1);
     }
 
     override void Draw(int state, double ticfrac) {
@@ -29,6 +32,7 @@ class SimpleHud : BaseStatusBar {
 		int cbarflags = DI_SCREEN_CENTER_BOTTOM|DI_ITEM_CENTER_BOTTOM;
 		int ctxtflags = DI_SCREEN_CENTER_BOTTOM|DI_TEXT_ALIGN_CENTER;
 		int crtxtflags = DI_SCREEN_CENTER_BOTTOM|DI_TEXT_ALIGN_RIGHT;
+        int sidebartxt = DI_SCREEN_RIGHT_CENTER|DI_TEXT_ALIGN_RIGHT;
 
         if (plr && sb) {
             // Positional stuff.
@@ -72,7 +76,30 @@ class SimpleHud : BaseStatusBar {
             DrawString(HealthFont,FormatNumber(hp),hpos,ltxtflags,hpcol,scale:hscl);
             DrawString(HealthFont,FormatNumber(arm),armpos,ltxtflags,Font.CR_GREEN,scale:hscl);
 
-            // Weapon.
+            // Weapons.
+            Inventory inv = plr.inv;
+            int sel = -1;
+            Array<string> categories;
+            while (inv) {
+                if (inv is "SimpleWeapon") {
+                    SimpleWeapon s = SimpleWeapon(inv);
+                    categories.push(String.Format("%s [%d]",s.category, s.slotnumber));
+                    if (CPlayer.ReadyWeapon == inv) {
+                        sel = categories.size() - 1; // Latest item in the array is selected.
+                    }
+                }
+                inv = inv.inv;
+            }
+
+            vector2 wlistpos = (-32,0 - (categories.size() * 4.5));
+            for (int i = 0; i < categories.size(); i++) {
+                if (sel == i) {
+                    DrawString(SmallFont,categories[i],wlistpos + (0,i * 9),sidebartxt,Font.CR_WHITE);
+                } else {
+                    DrawString(SmallFont,categories[i],wlistpos + (0,i * 9),sidebartxt,Font.CR_DARKGRAY);
+                }
+            }
+
             let wpn = CPlayer.ReadyWeapon;
             if (wpn) {
                 let a1 = wpn.AmmoType1;
@@ -100,6 +127,25 @@ class SimpleHud : BaseStatusBar {
                     DrawString(HealthFont,FormatNumber(m),(0,-96),ctxtflags,Font.CR_WHITE,scale:hscl);
                 }
             }
+
+            // Inventory bar.
+			let w = plr.InvSel;
+			if (w) {
+				vector2 invpos = (-96,-8);
+				if (IsInventoryBarVisible()) {
+					invticfrac = clamp(invticfrac+0.5,0,4);
+				} else {
+					invticfrac = clamp(invticfrac-0.5,0,4);
+				}
+				if (w.PrevInv()) {
+					DrawInventoryIcon(w.PrevInv(),invpos+(-16,-2),cbarflags,0.5);
+				}
+				if (w.NextInv()) {
+					DrawInventoryIcon(w.NextInv(),invpos+(16,-2),cbarflags,0.5);
+				}
+
+				DrawInventoryIcon(w,invpos+(0,-invticfrac),cbarflags);
+			}
             
             // Stat block time.
             DrawString(StatFont,String.Format("ATK: %d",atk),statblockpos+(atktf,0),ltxtflags,Font.CR_ICE);
