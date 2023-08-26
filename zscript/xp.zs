@@ -172,7 +172,7 @@ mixin class WaggleBob {
         if (rollrate == 0) { rollrate = frandom(18,24); }
         roll = sin(GetAge() * rollrate) * 15;
 
-        double scalebob = (1.0 - cos(GetAge() * rollrate)) * 0.1;
+        double scalebob = (1.0 - abs(cos(GetAge() * rollrate))) * 0.1;
         double cappedscale = scalebob + SmoothCap(0.5 + double(amount) / 100.,3);
         scale = (cappedscale,cappedscale);
     }

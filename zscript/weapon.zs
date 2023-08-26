@@ -56,6 +56,10 @@ class SimpleWeapon : Weapon {
         }
     }
 
+    action void Hitscan(vector2 spread, int number, int damage) {
+        A_FireBullets(spread.x,spread.y,number,damage,flags:FBF_USEAMMO|FBF_NORANDOM);
+    }
+
     action void A_Reload(bool altammo = false) {
         name loading;
         if (altammo && invoker.ammotype2) {
