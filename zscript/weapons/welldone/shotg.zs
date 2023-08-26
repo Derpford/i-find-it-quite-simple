@@ -1,5 +1,6 @@
 class SimpleShotgun : SimpleWeapon replaces Shotgun {
     default {
+        Tag "Shotgun";
         SimpleWeapon.TubeLoad true;
         SimpleWeapon.Mag 8;
         SimpleWeapon.Category "SHOTGUN", "COMMON";
