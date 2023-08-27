@@ -26,7 +26,7 @@ class DLCBrain : Thinker {
         return pack;
     }
 
-    void BuyDLC() {
+    bool BuyDLC() {
         // Adds a random DLC that you don't have yet.
         Array<String> buyable;
         for (int i = 0; i < alldlcs.size(); i++) {
@@ -39,7 +39,7 @@ class DLCBrain : Thinker {
         // If there are no available DLCs, return early.
         if (buyable.size() == 0) {
             Console.printf("You already own all DLCs!");
-            return;
+            return false;
         }
 
         // Pick a totally random DLC from the buyable list.
@@ -51,6 +51,7 @@ class DLCBrain : Thinker {
         }
         // And add it to the list.
         dlcs.push(bought);
+        return true;
     }
 
     void RemoveDLC(int idx) {
@@ -70,12 +71,14 @@ class DLCBrain : Thinker {
             let d = FindDLC(dlcs[i]);
             for (int j = 0; j < d.weapons.size(); j++) {
                 Class<Actor> it = d.weapons[j];
-                let wep = SimpleWeapon(GetDefaultByType(it));
-                if (wep) {
-                    // Finally, we can check the damn category.
-                    if (wep.category == category) {
-                        weapons.push(wep.GetClassName());
-                        weights.push(wep.rarity + 1); // Weight of 0 breaks things.
+                if (it) {
+                    let wep = SimpleWeapon(GetDefaultByType(it));
+                    if (wep) {
+                        // Finally, we can check the damn category.
+                        if (wep.category == category) {
+                            weapons.push(wep.GetClassName());
+                            weights.push(wep.rarity + 1); // Weight of 0 breaks things.
+                        }
                     }
                 }
             }
@@ -126,6 +129,7 @@ class DLCBrain : Thinker {
 
 class DLCBuyButton : Inventory {
     // A usable inventory item that buys new DLC.
+    const cost = 1500;
     DLCBrain brain;
     default {
         +Inventory.INVBAR;
@@ -140,8 +144,15 @@ class DLCBuyButton : Inventory {
     }
 
     override bool Use(bool pickup) {
-        brain.BuyDLC(); 
-        return false; // Don't consume the item.
+        if (owner.Score >= cost) {
+            if (brain.BuyDLC()) {
+                owner.Score -= cost; 
+            }
+            return false; // Don't consume the item.
+        } else {
+            owner.A_Print(String.Format("You need %d Bucks to buy DLC!",cost));
+            return false;
+        }
     }
 }
 
@@ -221,6 +232,6 @@ class HeavyPack : DLCPack {
     // Includes the Assault Cannon and Magnum Pistol.
     override void setup() {
         packname = "Heavy Weapons Pack";
-        weapons.push("AssaultCannnon");
+        weapons.push("AssaultCannon");
     }
 }

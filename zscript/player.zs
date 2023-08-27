@@ -2,6 +2,8 @@ class SimplePlayer : DoomPlayer {
     default {
         Player.StartItem "StatBlock";
         Player.StartItem "SimplePistol";
+        Player.StartItem "DLCBuyButton";
+        Player.StartItem "ScoreItem", 500;
     }
 
     override void Tick() {

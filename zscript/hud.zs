@@ -31,6 +31,7 @@ class SimpleHud : BaseStatusBar {
 		int rtxtflags = DI_SCREEN_RIGHT_BOTTOM|DI_TEXT_ALIGN_RIGHT;
 		int cbarflags = DI_SCREEN_CENTER_BOTTOM|DI_ITEM_CENTER_BOTTOM;
 		int ctxtflags = DI_SCREEN_CENTER_BOTTOM|DI_TEXT_ALIGN_CENTER;
+        int toptxtflags = DI_SCREEN_CENTER_TOP|DI_TEXT_ALIGN_CENTER;
 		int crtxtflags = DI_SCREEN_CENTER_BOTTOM|DI_TEXT_ALIGN_RIGHT;
         int sidebartxt = DI_SCREEN_RIGHT_CENTER|DI_TEXT_ALIGN_RIGHT;
 
@@ -148,6 +149,10 @@ class SimpleHud : BaseStatusBar {
 
 				DrawInventoryIcon(w,invpos+(0,-invticfrac),cbarflags);
 			}
+            
+            // Score.
+
+            DrawString(SmallFont,String.Format("$%d",plr.Score),(0,48),toptxtflags,Font.CR_WHITE,scale:(2,2));
             
             // Stat block time.
             DrawString(StatFont,String.Format("ATK: %d",atk),statblockpos+(atktf,0),ltxtflags,Font.CR_ICE);

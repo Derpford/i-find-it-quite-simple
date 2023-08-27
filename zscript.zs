@@ -8,6 +8,7 @@ version "4.10"
 #include "zscript/mixins.zs"
 #include "zscript/spawns.zs"
 #include "zscript/dlc.zs"
+#include "zscript/cash.zs"
 // Weapons.
 // Well Done, the common tier
 #include "zscript/weapons/welldone/pistol.zs"

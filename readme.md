@@ -17,7 +17,6 @@ Complex? Doom?
 - Demons drop bits of Health and Armor Essence on kill, which go into your Techno-Flask! Press +USER1 to drink from ye flask when it's built up a full charge of either Health or Armor, restoring 50% health and/or 50% armor. Health and Armor bonuses are replaced with various kinds of Essence Containers, which go right into your Technoflask. Your Technoflask also automatically refills at the start of each level. 
 - 100 units of essence turns into 1 charge. However, your Technoflask can keep building up essence after it hits max charges. If you get 100 units of essence while the flask is at max charge, you *upgrade* your flask's charge cap! With the Upgrade Mania Pack, you can also find flask upgrades in the wild, as well as health and armor upgrades.
 - With the Rip N Tear Pack, you start getting Ammo Essence from enemies as well, and your Flask gains the ability to grant you 25% ammo for all weapons when you drink it while it has an ammo charge.
-- As a rule, slot 2 uses clips, slot 3 uses shells, slot 4 uses cells, and slot 5 uses rockets.
 
 
 ## Weapons

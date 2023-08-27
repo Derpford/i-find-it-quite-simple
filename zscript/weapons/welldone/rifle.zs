@@ -42,11 +42,14 @@ class StockRifle : SimpleWeapon {
 
     states {
         Spawn:
+            SMGR H 0;
             SMGI A -1;
             Stop;
         
         Select:
-            SMGG A 1 A_Raise(18);
+            SMGR B 0 StartArmSwing();
+        SelectLoop:
+            SMGR B 1 A_Raise(18);
             Loop;
         DeSelect:
             SMGG A 1 A_Lower(18);

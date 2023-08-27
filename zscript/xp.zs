@@ -134,6 +134,28 @@ class XPDropHandler : EventHandler {
             orb.amount = valperorb;
             orb.Vel3DFromAngle(frandom(4,12),frandom(0,360),frandom(-20,-60));
         }
+        // Do it again, but for cash, this time selecting a random coin each time.
+        for (int i = 0; i < orbspawns; i++) {
+            Name ctype = "CopperCoin";
+            Name stype = "SilverCoin";
+            Name gtype = "GoldCoin";
+            switch(random(0,2)) {
+                default:
+                case 0:
+                    ctype = "CopperCoin";
+                    break;
+                case 1:
+                    ctype = "SilverCoin";
+                    break;
+                case 2:
+                    ctype = "GoldCoin";
+                    break;
+            }
+
+            let orb = Inventory(e.Thing.Spawn(ctype,e.Thing.pos));
+            orb.amount = valperorb;
+            orb.Vel3DFromAngle(frandom(4,12),frandom(0,360),frandom(-20,-60));
+        }
     }
 }
 
