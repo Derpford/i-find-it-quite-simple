@@ -124,7 +124,9 @@ class SimpleHud : BaseStatusBar {
                     if (a1 && wpn.ammouse1 > 0) {
                         m = min(m,GetAmount(a1.GetClassName()));
                     }
-                    DrawString(HealthFont,FormatNumber(m),(0,-96),ctxtflags,Font.CR_WHITE,scale:hscl);
+                    if (m > 0) {
+                        DrawString(HealthFont,FormatNumber(m),(0,-96),ctxtflags,Font.CR_WHITE,scale:hscl);
+                    }
                 }
             }
 
