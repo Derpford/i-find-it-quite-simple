@@ -4,6 +4,7 @@ class SimplePistol : SimpleWeapon {
         SimpleWeapon.Mag 10;
         SimpleWeapon.Category "PISTOL", 0;
         Weapon.SlotNumber 1;
+        Inventory.PickupMessage "Picked a pistol!";
     }
 
     action void FirePistol() {
