@@ -4,7 +4,7 @@ class SimpleGrenade : SimpleWeapon {
         SimpleWeapon.Mag -1;
         SimpleWeapon.Category "HEAVY",0;
 
-        Weapon.SlotNumber 3;
+        Weapon.SlotNumber 4;
         Weapon.AmmoType1 "Shell";
         Weapon.AmmoUse1 3;
         Weapon.AmmoGive1 3;
