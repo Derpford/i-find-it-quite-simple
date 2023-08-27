@@ -216,3 +216,11 @@ class BoomstickPack : DLCPack {
         weapons.push("DoubleBarrel");
     }
 }
+
+class HeavyPack : DLCPack {
+    // Includes the Assault Cannon and Magnum Pistol.
+    override void setup() {
+        packname = "Heavy Weapons Pack";
+        weapons.push("AssaultCannnon");
+    }
+}

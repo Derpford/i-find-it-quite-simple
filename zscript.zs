@@ -16,5 +16,6 @@ version "4.10"
 #include "zscript/weapons/welldone/grenade.zs"
 // Medium Rare, the uncommon tier
 #include "zscript/weapons/mediumrare/double.zs"
+#include "zscript/weapons/mediumrare/assault.zs"
 // Rare, the...rare tier
 // RAW, the Epic tier
