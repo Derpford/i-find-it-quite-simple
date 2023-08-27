@@ -205,6 +205,7 @@ class BasePack : DLCPack {
         weapons.push("SimplePistol");
         weapons.push("SimpleShotgun");
         weapons.push("StockRifle");
+        weapons.push("SimpleGrenade");
     }
 }
 

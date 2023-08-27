@@ -1,0 +1,6 @@
+Code: Ghastly_dragon
+GLDefs: Ghastly_dragon
+Sounds: Epic Games, The Funktasm
+Sprites: Eriance, KDiZD Team (Projectile)
+Sprite Edit: Ghastly_dragon, Infernus, Xaser
+Idea Base: Fallout 3's Experimental MIRV.
