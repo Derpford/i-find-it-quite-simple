@@ -20,6 +20,53 @@ class SimplePlayer : DoomPlayer {
                 }
             }
         }
+    }
+
+    override void CheckJump() {
+        let btn = GetPlayerInput(INPUT_BUTTONS);
+        bool isMoving = btn & (BT_FORWARD|BT_BACK|BT_MOVELEFT|BT_MOVERIGHT);
+        bool isStrafing = btn & (BT_MOVELEFT|BT_MOVERIGHT);
+        bool isForward = btn & BT_FORWARD;
+        bool isBack = btn & BT_BACK;
+        bool isJumping = btn & BT_JUMP;
+        double xv, yv, ang;
+        if (isMoving) {
+            xv = GetPlayerInput(MODINPUT_FORWARDMOVE) / 12800.0;
+            yv = GetPlayerInput(MODINPUT_SIDEMOVE) / 10240.0;
+            ang = atan2(-yv,xv);
+        }
+        if(isJumping && player.onground)
+		{
+			if(waterlevel >= 2)
+			{
+				// Swimming overrides everything.
+				vel.z = 4 * speed;
+				return;
+			}
+
+            if (isMoving) {
+                if (!isForward) {
+                    // Jumping while strafing applies additional sideways boost.
+                    // Backjumping does something similar.
+                    double boostang = 0;
+                    if (isStrafing && !isBack) {
+                        boostang = -90;
+                        if (yv < 0) {
+                            boostang = 90;
+                        }
+                    }
+                    if (isBack && !isStrafing) {
+                        boostang = 180;
+                    }
+                    VelFromAngle(15,angle+boostang);
+                } else {
+                    // Jumping while moving forward thrusts you in your movement direction.
+                    Thrust(4,angle+ang);
+                }
+            }
+
+            vel.z += 10;
+        }
 
     }
 }
