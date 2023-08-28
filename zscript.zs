@@ -15,6 +15,7 @@ version "4.10"
 #include "zscript/weapons/welldone/shotg.zs"
 #include "zscript/weapons/welldone/rifle.zs"
 #include "zscript/weapons/welldone/grenade.zs"
+#include "zscript/weapons/welldone/rocket.zs"
 // Medium Rare, the uncommon tier
 #include "zscript/weapons/mediumrare/double.zs"
 #include "zscript/weapons/mediumrare/assault.zs"
