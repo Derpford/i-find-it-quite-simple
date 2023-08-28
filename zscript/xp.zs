@@ -1,6 +1,8 @@
 class StatBlock : Inventory {
     // This mysterious block of green crystal shows you how powerful you are!
 
+    const statbase = 1000.0; // Reaching this number in a stat doubles your effectiveness.
+
     double atk;
     double aim;
     double def;
@@ -15,7 +17,7 @@ class StatBlock : Inventory {
     default {
         Inventory.Amount 1;
         Inventory.MaxAmount 1; // You shouldn't have more than one statblock.
-        StatBlock.Stats 1, 1;
+        StatBlock.Stats 0, 1;
         StatBlock.StatBonus 1, 2;
     }
 
@@ -86,14 +88,14 @@ class StatBlock : Inventory {
         double ddmg = dmg;
         if (passive) {
             // Modify incoming damage based on defense. At 100 def, damage taken is normal.
-            double mult = 100. / (100. + def);
+            double mult = statbase / (statbase + def);
             new = floor(ddmg * mult);
 
         } else {
             // Outgoing damage is increased based on both ATK and AIM. 
             // ATK is a straight multiplier. AIM adds a randomized exponent(!).
-            double expo = max(1,frandom(100,100+aim)) / 100.;
-            double dmult = max(1,100.+atk) / 100.;
+            double expo = max(1,(frandom(statbase,statbase+aim) / statbase));
+            double dmult = max(1,(statbase+atk) / statbase);
             new = floor((ddmg * dmult) ** expo);
         }
     }
