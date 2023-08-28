@@ -58,7 +58,10 @@ class SimplePlayer : DoomPlayer {
                     if (isBack && !isStrafing) {
                         boostang = 180;
                     }
-                    VelFromAngle(15,angle+boostang);
+                    if (boostang != 0) {
+                        // We should only boost if the boost angle was actually chosen.
+                        VelFromAngle(15,angle+boostang);
+                    }
                 } else {
                     // Jumping while moving forward coerces your velocity toward your movement keys.
                     vector2 inputvel = (cos(angle+ang),sin(angle+ang));
