@@ -26,7 +26,7 @@ class DLCBrain : Thinker {
         return pack;
     }
 
-    bool BuyDLC() {
+    bool BuyDLC(Actor buyer) {
         // Adds a random DLC that you don't have yet.
         Array<String> buyable;
         for (int i = 0; i < alldlcs.size(); i++) {
@@ -48,6 +48,7 @@ class DLCBrain : Thinker {
         let pack = FindDLC(bought);
         if (pack) {
             Console.printf("You got the %s!",pack.packname);
+            buyer.A_Print(String.Format("You got the %s!",pack.packname),0,"DBIGFONT");
         }
         // And add it to the list.
         dlcs.push(bought);
@@ -145,12 +146,12 @@ class DLCBuyButton : Inventory {
 
     override bool Use(bool pickup) {
         if (owner.Score >= cost) {
-            if (brain.BuyDLC()) {
+            if (brain.BuyDLC(owner)) {
                 owner.Score -= cost; 
             }
             return false; // Don't consume the item.
         } else {
-            owner.A_Print(String.Format("You need %d Bucks to buy DLC!",cost));
+            owner.A_Print(String.Format("You need %d Bucks to buy DLC!",cost),0,"DBIGFONT");
             return false;
         }
     }
