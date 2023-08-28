@@ -84,7 +84,7 @@ class DragonBreathBlast : Actor {
 
     action void FireBurst() {
         double range = 64;
-        A_Explode(5,range,0,fulldamagedistance:range);
+        A_Explode(10,range,0,fulldamagedistance:range);
         if (bNOGRAVITY) {
             if (invoker.vel.length() > 10) {
                 invoker.vel = invoker.vel.unit() * (invoker.vel.length() * 0.9);
