@@ -59,7 +59,12 @@ class SimplePlayer : DoomPlayer {
                         boostang = 180;
                     }
                     VelFromAngle(15,angle+boostang);
-                } 
+                } else {
+                    // Jumping while moving forward coerces your velocity toward your movement keys.
+                    vector2 inputvel = (cos(angle+ang),sin(angle+ang));
+                    double boost = 1 - vel.xy.unit() dot inputvel;
+                    Thrust(vel.length() * boost * 0.5,angle+ang);
+                }
             }
 
             vel.z += 10;
