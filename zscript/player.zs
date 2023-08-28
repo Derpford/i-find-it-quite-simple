@@ -59,14 +59,10 @@ class SimplePlayer : DoomPlayer {
                         boostang = 180;
                     }
                     VelFromAngle(15,angle+boostang);
-                } else {
-                    // Jumping while moving forward thrusts you in your movement direction.
-                    Thrust(4,angle+ang);
-                }
+                } 
             }
 
             vel.z += 10;
         }
-
     }
 }
