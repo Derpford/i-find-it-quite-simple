@@ -11,20 +11,18 @@ class DoubleBarrel : SimpleWeapon {
         Weapon.AmmoGive1 2;
         Weapon.AmmoUse2 4;
         
-        SimpleWeapon.Mag 2;
+        SimpleWeapon.Mag -1;
     }
 
     action void FireBuckshot() {
         Hitscan((8,1),21,random(7,15));
         A_StartSound("weapons/sshotf");
         A_GunFlash();
-        invoker.mag -= 2;
     }
 
     action void FireDragonBreath() {
-        // TODO: Dragon's Breath projectile.
+        A_FireProjectile("DragonBreathBlast");
         A_StartSound("weapons/sshotf");
-        invoker.mag -= 2;
     }
 
     states {
@@ -62,9 +60,64 @@ class DoubleBarrel : SimpleWeapon {
             SHT2 A 3;
             Goto Ready;
 
+        AltFire:
+            SHT2 A 3 FireDragonBreath();
+            Goto Reload;
+
         Flash:
             SHT2 I 3 Bright A_Light1();
             SHT2 J 2 Bright A_Light2();
             Goto LightDone;
+    }
+}
+
+class DragonBreathBlast : Actor {
+    default {
+        PROJECTILE;
+        Radius 2; // Uses explosions to do "ripping".
+        +THRUACTORS;
+        +BRIGHT;
+        RenderStyle "Add";
+        DamageType "Fire";
+        Speed 60;
+    }
+
+    action void FireBurst() {
+        double range = 64;
+        A_Explode(5,range,0,fulldamagedistance:range);
+        if (bNOGRAVITY) {
+            if (invoker.vel.length() > 10) {
+                invoker.vel = invoker.vel.unit() * (invoker.vel.length() * 0.9);
+            } else {
+                bNOGRAVITY = false;
+            }
+        }
+        A_SpawnItemEX("FireParticle",range,angle:frandom(0,360));
+    }
+
+    states {
+        Spawn:
+            MISL BBCCDDCC 1 FireBurst();
+            Loop;
+        
+        Death:
+            MISL CD 3;
+            Stop;
+
+    }
+}
+
+class FireParticle : Actor {
+    default {
+        +NOINTERACTION;
+        RenderStyle "Add";
+        Scale 0.25;
+        +BRIGHT;
+    }
+
+    states {
+        Spawn:
+            MISL BCD 3;
+            Stop;
     }
 }
