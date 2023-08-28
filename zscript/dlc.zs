@@ -219,6 +219,7 @@ class BasePack : DLCPack {
         weapons.push("StockRifle");
         weapons.push("SimpleGrenade");
         weapons.push("RawketLawnchair");
+        weapons.push("SimplePlasma");
     }
 }
 
