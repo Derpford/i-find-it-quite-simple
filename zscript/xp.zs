@@ -123,6 +123,37 @@ class XPOrb : VacuumChase {
     }
 }
 
+class MonsterLevelHandler : EventHandler {
+    // Gives all monsters a Stat Block with a random level, based on the average level of all players.
+
+    override void WorldThingSpawned(WorldEvent e) {
+        if (e.Thing.bISMONSTER) {
+            double sum;
+            int numplayers;
+            for (int i = 0; i < players.size(); i++) {
+                if (players[i].mo) {
+                    let block = StatBlock(players[i].mo.FindInventory("StatBlock"));
+                    if (block) {
+                        sum += block.lvl;
+                        numplayers++;
+                    }
+                }
+            } 
+            double avglvl = sum / numplayers;
+            double mult = frandom(0.6,1.2);
+
+            // Give 'em the block.
+            e.Thing.GiveInventory("StatBlock",1);
+            let block = StatBlock(e.Thing.FindInventory("StatBlock"));
+            if (block) {
+                block.targetlvl = floor(avglvl * mult);
+            }
+        }
+    }
+
+
+}
+
 class XPDropHandler : EventHandler {
     override void WorldThingDied(WorldEvent e) {
         // When a thing dies, if it's a monster, spawn an appropriate amount of XP Orbs.
