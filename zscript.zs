@@ -9,6 +9,7 @@ version "4.10"
 #include "zscript/spawns.zs"
 #include "zscript/dlc.zs"
 #include "zscript/cash.zs"
+#include "zscript/monster.zs"
 // Weapons.
 // Well Done, the common tier
 #include "zscript/weapons/welldone/pistol.zs"
@@ -22,3 +23,9 @@ version "4.10"
 #include "zscript/weapons/mediumrare/assault.zs"
 // Rare, the...rare tier
 // RAW, the Epic tier
+
+// Monsters.
+#include "zscript/monsters/pistolzombie.zs"
+#include "zscript/monsters/riflezombie.zs"
+#include "zscript/monsters/sgzombie.zs"
+#include "zscript/monsters/dbzombie.zs"
