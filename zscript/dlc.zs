@@ -270,7 +270,7 @@ class BasePack : DLCPack {
 }
 
 class BoomstickPack : DLCPack {
-    // A simple DLC pack that adds the Double Barrel.
+    // A simple DLC pack that adds the Double Barrel and Double Barrel Zombie.
     override void setup() {
         packname = "Boomstick Pack";
         weapons.push("DoubleBarrel");
@@ -283,5 +283,14 @@ class HeavyPack : DLCPack {
     override void setup() {
         packname = "Heavy Weapons Pack";
         weapons.push("AssaultCannon");
+    }
+}
+
+class ZombiePack1 : DLCPack {
+    // Includes the Rifle Zombie and Plasma Zombie.
+    // Plasma Zombie TODO.
+    override void setup() {
+        packname = "Zombie Pack 1";
+        monsters.push("RifleZombie");
     }
 }
