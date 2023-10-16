@@ -1,3 +1,4 @@
+// Weapons.
 class MeleeSpawn : DLCWeaponSpawner replaces Chainsaw {
     default {
         DLCWeaponSpawner.Category "MELEE";
@@ -43,5 +44,25 @@ class EnergySpawn : DLCWeaponSpawner replaces PlasmaRifle {
 class BFGSpawn : DLCWeaponSpawner replaces BFG9000 {
     default {
         DLCWeaponSpawner.Category "BFG";
+    }
+}
+
+// Monsters.
+
+class ZombSpawn1 : DLCMonsterSpawner replaces ZombieMan {
+    default {
+        DLCMonsterSpawner.Category "ZOMBIE",1;
+    }
+}
+
+class ZombSpawn2 : DLCMonsterSpawner replaces ShotgunGuy {
+    default {
+        DLCMonsterSpawner.Category "ZOMBIE",2;
+    }
+}
+
+class ZombSpawn3 : DLCMonsterSpawner replaces ChaingunGuy {
+    default {
+        DLCMonsterSpawner.Category "ZOMBIE",3;
     }
 }

@@ -86,6 +86,28 @@ class DLCBrain : Thinker {
         }
     }
 
+    void GetMonsters(string category, int spawntier, out Array<string> monsters, out Array<double> weights) {
+        for (int i = 0; i < dlcs.size(); i++) {
+            let d = FindDLC(dlcs[i]);
+            for (int j = 0; j < d.monsters.size(); j++) {
+                Class<Actor> it = d.monsters[j];
+                if (it) {
+                    let mon = SimpleMonster(GetDefaultByType(it));
+                    if (mon) {
+                        // Finally, we can check the damn category.
+                        if (mon.category == category) {
+                            double t = mon.tier;
+                            double st = double(spawntier);
+                            double div = min(t,st) / max(t,st);
+                            monsters.push(mon.GetClassName());
+                            weights.push(mon.weight * div);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override void Tick() {
         super.Tick();
         {
@@ -157,27 +179,47 @@ class DLCBuyButton : Inventory {
     }
 }
 
-class DLCWeaponSpawner : Actor abstract {
+class DLCMonsterSpawner : RandomSpawner {
+    // Like the WeaponSpawner, but for monsters.
+    mixin WeightedRandom;
+    string category;
+    int tier;
+    Property Category: category,tier; // Which kind of monster should spawn here?
+
+    override Name ChooseSpawn() {
+        bool nomonsters = sv_nomonsters || level.nomonsters;
+        if (nomonsters) { return "None"; }
+        DLCBrain brain = DLCBrain.get();
+        Array<String> monsters;
+        Array<double> weights;
+        brain.GetMonsters(category,tier,monsters,weights);
+        int select = WeightedRandom(weights);
+        if (select >= 0) {
+            return monsters[select];
+        } else {
+            // Whoops, nothing to spawn.
+            return "None";
+        }
+    }
+}
+
+class DLCWeaponSpawner : RandomSpawner {
     mixin WeightedRandom;
     // Picks a random weapon out of available weapons of the appropriate type. Higher tier weapons have higher weight.
     string category;
     Property Category: category; // Which kind of weapon should spawn here?
 
-    override void PostBeginPlay() {
+    override Name ChooseSpawn() {
         DLCBrain brain = DLCBrain.get();
         Array<String> weapons;
         Array<double> weights;
         brain.GetWeapons(category,weapons,weights);
         int select = WeightedRandom(weights);
         if (select >= 0) {
-            string replacer = weapons[select];
-            // Now we can replace ourself.
-            Actor it = spawn(replacer,pos);
-            it.A_SetSpecial(Special,Args[0],Args[1],Args[2],Args[3],Args[4]);
-            it.ChangeTID(TID);
+            return weapons[select];
         } else {
             // Whoops, nothing to spawn.
-            A_Remove(AAPTR_DEFAULT);
+            return "None";
         }
     }
 }
@@ -214,12 +256,16 @@ class BasePack : DLCPack {
     // Contains all the starter weapons.
     override void setup() {
         packname = "Base Content";
+        // Weapons
         weapons.push("SimplePistol");
         weapons.push("SimpleShotgun");
         weapons.push("StockRifle");
         weapons.push("SimpleGrenade");
         weapons.push("RawketLawnchair");
         weapons.push("SimplePlasma");
+        // Monsters
+        monsters.push("PistolZombie");
+        monsters.push("ShotZombie");
     }
 }
 
@@ -228,6 +274,7 @@ class BoomstickPack : DLCPack {
     override void setup() {
         packname = "Boomstick Pack";
         weapons.push("DoubleBarrel");
+        monsters.push("DBZombie");
     }
 }
 
