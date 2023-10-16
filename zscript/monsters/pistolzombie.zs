@@ -19,7 +19,7 @@ class PistolZombie : SimpleMonster {
 		ActiveSound "grunt/active";
 		Obituary "%o was mugged by a pistol zombie.";
 		Tag "Pistol Zombie";
-		DropItem "SimplePistol";
+		DropItem "PistolSpawn";
 
         SimpleMonster.Category "ZOMBIE",1;
         SimpleMonster.Weight 10;
