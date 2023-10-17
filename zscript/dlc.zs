@@ -29,7 +29,7 @@ class DLCBrain : Thinker {
     bool BuyDLC(Actor buyer) {
         // Adds a random DLC that you don't have yet.
         Array<String> buyable;
-        foreach (dlc : dlcs) {
+        foreach (dlc : alldlcs) {
             if (dlcs.find(dlc) == dlcs.size()) {
                 // We don't already have this one, so it's buyable.
                 buyable.push(dlc);
