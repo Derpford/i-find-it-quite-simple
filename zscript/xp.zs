@@ -130,9 +130,9 @@ class MonsterLevelHandler : EventHandler {
         if (e.Thing.bISMONSTER) {
             double sum;
             int numplayers;
-            for (int i = 0; i < players.size(); i++) {
-                if (players[i].mo) {
-                    let block = StatBlock(players[i].mo.FindInventory("StatBlock"));
+            foreach (p : players) {
+                if (p.mo) {
+                    let block = StatBlock(p.mo.FindInventory("StatBlock"));
                     if (block) {
                         sum += block.lvl;
                         numplayers++;

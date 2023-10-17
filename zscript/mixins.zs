@@ -1,8 +1,8 @@
 mixin class WeightedRandom {
     int WeightedRandom(Array<Double> weights) {
         double sum;
-        for (int i = 0; i < weights.size(); i++) {
-            sum += weights[i];
+        foreach (w : weights) {
+            sum += w;
         }
 
         // And now we roll.

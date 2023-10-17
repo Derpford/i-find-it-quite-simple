@@ -12,11 +12,11 @@ class DLCBrain : Thinker {
     void InitAvailableDLCs() {
         // Should only need to happen once, since the list of available DLCs never changes.
         alldlcs.clear();
-        for (int i = 0; i < AllClasses.size(); i++) {
-            if (AllClasses[i] is "DLCPack" && !AllClasses[i].IsAbstract()) {
+        foreach (c : AllClasses) {
+            if (c is "DLCPack" && !c.IsAbstract()) {
                 // Add this DLC to the DLCs list.
-                Console.printf("Found DLC %s",AllClasses[i].GetClassName());
-                alldlcs.push(AllClasses[i].GetClassName());
+                Console.printf("Found DLC %s",c.GetClassName());
+                alldlcs.push(c.GetClassName());
             }
         }
     }
@@ -29,10 +29,10 @@ class DLCBrain : Thinker {
     bool BuyDLC(Actor buyer) {
         // Adds a random DLC that you don't have yet.
         Array<String> buyable;
-        for (int i = 0; i < alldlcs.size(); i++) {
-            if (dlcs.find(alldlcs[i]) == dlcs.size()) {
+        foreach (dlc : dlcs) {
+            if (dlcs.find(dlc) == dlcs.size()) {
                 // We don't already have this one, so it's buyable.
-                buyable.push(alldlcs[i]);
+                buyable.push(dlc);
             }
         }
 
@@ -68,10 +68,10 @@ class DLCBrain : Thinker {
     }
 
     void GetWeapons(string category, out Array<string> weapons, out Array<double> weights) {
-        for (int i = 0; i < dlcs.size(); i++) {
-            let d = FindDLC(dlcs[i]);
-            for (int j = 0; j < d.weapons.size(); j++) {
-                Class<Actor> it = d.weapons[j];
+        foreach (pack : dlcs) {
+            let d = FindDLC(pack);
+            foreach (wep : d.weapons) {
+                Class<Actor> it = wep;
                 if (it) {
                     let wep = SimpleWeapon(GetDefaultByType(it));
                     if (wep) {
@@ -87,10 +87,10 @@ class DLCBrain : Thinker {
     }
 
     void GetMonsters(string category, int spawntier, out Array<string> monsters, out Array<double> weights) {
-        for (int i = 0; i < dlcs.size(); i++) {
-            let d = FindDLC(dlcs[i]);
-            for (int j = 0; j < d.monsters.size(); j++) {
-                Class<Actor> it = d.monsters[j];
+        foreach (pack : dlcs) {
+            let d = FindDLC(pack);
+            foreach (mon : d.monsters) {
+                Class<Actor> it = mon;
                 if (it) {
                     let mon = SimpleMonster(GetDefaultByType(it));
                     if (mon) {
