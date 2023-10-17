@@ -203,6 +203,7 @@ class VacuumChase : Inventory {
         // If this thing has a target, that's the player who's picking this item up.
         super.Tick();
         if (target) {
+            bNOCLIP = (Vec3To(target).length() > radius);
             VelIntercept(target,min(vel.length()+1,70));
             vector3 center = Vec3To(target) + (0,0,target.height/2);
             vel = MixVec(vel, 0.25, center, 0.75, vel.length());
