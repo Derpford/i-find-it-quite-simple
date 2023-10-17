@@ -280,9 +280,11 @@ class BoomstickPack : DLCPack {
 
 class HeavyPack : DLCPack {
     // Includes the Assault Cannon and Magnum Pistol.
+    // Also the Chaingun Zombie.
     override void setup() {
         packname = "Heavy Weapons Pack";
         weapons.push("AssaultCannon");
+        monsters.push("ChaingunZombie");
     }
 }
 
