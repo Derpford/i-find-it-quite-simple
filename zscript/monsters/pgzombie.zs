@@ -41,8 +41,8 @@ class PlasmaZombie : SimpleMonster {
         Missile:
             FRPO E 15 A_FaceTarget();
         MissileLoop:
-            FRPO F 2 FirePlasma();
-            FRPO E 3;
+            FRPO F 4 FirePlasma();
+            FRPO E 4;
             FRPO E 0 A_MonsterRefire(80,"MissileEnd");
             Loop;
         MissileEnd:
@@ -77,6 +77,6 @@ class PlasmaZombie : SimpleMonster {
 
 class PZombieBolt : BlueBolt {
     default {
-        DamageFunction (24);
+        DamageFunction (16);
     }
 }
