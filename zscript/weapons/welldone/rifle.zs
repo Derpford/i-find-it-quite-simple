@@ -14,8 +14,7 @@ class StockRifle : SimpleWeapon {
     }
 
     action void FireRifle() {
-        // A_FireBullets(0.5,2,1,random(12,15),flags:FBF_USEAMMO|FBF_NORANDOM);
-        Hitscan((0.5,2),1,random(12,15));
+        Hitscan((0.5,2),1,random(16,24));
         A_StartSound("weapons/pistol");
         A_Overlay(-2,"Flash");
         A_OverlayFlags(-2,PSPF_RENDERSTYLE,true);
