@@ -252,6 +252,10 @@ class DLCPack : Thinker Abstract {
     abstract void setup(); // Add weapons and monsters to the pack.
 }
 
+////////
+// DLC GOES HERE
+////////
+
 class BasePack : DLCPack {
     // Contains all the starter weapons.
     override void setup() {
@@ -290,9 +294,9 @@ class HeavyPack : DLCPack {
 
 class ZombiePack1 : DLCPack {
     // Includes the Rifle Zombie and Plasma Zombie.
-    // Plasma Zombie TODO.
     override void setup() {
         packname = "Zombie Pack 1";
         monsters.push("RifleZombie");
+        monsters.push("PlasmaZombie");
     }
 }
