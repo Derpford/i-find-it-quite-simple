@@ -14,7 +14,7 @@ class SimpleGrenade : SimpleWeapon {
     }
 
     action void FireGrenade() {
-        A_FireProjectile("GrenadeShot",pitch: -5);
+        A_FireProjectile("GrenadeShot",pitch: -10);
         A_StartSound("Hellstorm/Fire");
     }
 
@@ -53,7 +53,8 @@ class GrenadeShot : Actor {
     default {
         PROJECTILE;
         -NOGRAVITY;
-        Speed 60;
+        Speed 40;
+        BounceType "Doom";
         DamageFunction (40);
         DeathSound "Hellstorm/Hit";
     }
