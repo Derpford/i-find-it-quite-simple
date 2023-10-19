@@ -27,7 +27,6 @@ class AssaultCannon : SimpleWeapon {
                 invoker.mag--;
             }
             invoker.shots = (invoker.shots + 1) % 4;
-            console.printf("Shot count: %d",invoker.shots);
         }
 
     states {
