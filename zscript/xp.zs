@@ -5,7 +5,7 @@ class StatBlock : Inventory {
 
     double atk;
     double aim;
-    double def;
+    double end;
     double startingstats, statgrow; // How much you start with, and how much it grows by.
     int statminbonus, statmaxbonus; // The minimum/maximum number of stat boosts a character can get per level. 
     Property Stats: startingstats, statgrow;
@@ -13,7 +13,7 @@ class StatBlock : Inventory {
     int targetlvl, lvl; // targetlvl is where we want to level up to; lvl is how many levels we've applied
     int skillpoints;
     int xp; // You gain +1 level per every 100 XP, and 1 XP per point of health that a thing had when it died. Yes, this means that you level up REALLY FUCKING FAST.
-    double aniatk, aniaim, anidef; // For the HUD to animate these three flashing.
+    double aniatk, aniaim, aniend; // For the HUD to animate these three flashing.
     default {
         Inventory.Amount 1;
         Inventory.MaxAmount 1; // You shouldn't have more than one statblock.
@@ -24,7 +24,7 @@ class StatBlock : Inventory {
     override void PostBeginPlay() {
         atk = startingstats;
         aim = startingstats;
-        def = startingstats;
+        end = startingstats;
         super.PostBeginPlay();
     }
 
@@ -37,7 +37,7 @@ class StatBlock : Inventory {
         // Tick animations.
         aniatk = AnimateStat(aniatk);
         aniaim = AnimateStat(aniaim);
-        anidef = AnimateStat(anidef);
+        aniend = AnimateStat(aniend);
 
         // Check if it's time to level up.
         if (xp >= 100) {
@@ -65,8 +65,8 @@ class StatBlock : Inventory {
                     aniaim+=kick;
                     break;
                 case 2:
-                    def += statgrow;
-                    anidef+=kick;
+                    end += statgrow;
+                    aniend+=kick;
                     break;
             }
             skillpoints--;
@@ -84,18 +84,23 @@ class StatBlock : Inventory {
         }
     }
 
+    double StatMultiplier(double stat) {
+        return (statbase+stat) / statbase;
+    }
+
     override void ModifyDamage(int dmg, name type, out int new, bool passive, Actor inf, Actor src, int flags) {
         double ddmg = dmg;
         if (passive) {
             // Modify incoming damage based on defense. At 100 def, damage taken is normal.
-            double mult = statbase / (statbase + def);
-            new = floor(ddmg * mult);
+            // double mult = statbase / (statbase + def);
+            // new = floor(ddmg * mult);
+            // DEF rework in progress.
 
         } else {
             // Outgoing damage is increased based on both ATK and AIM. 
             // ATK is a straight multiplier. AIM adds a randomized exponent(!).
-            double expo = max(1,(frandom(statbase,statbase+aim) / statbase));
-            double dmult = max(1,(statbase+atk) / statbase);
+            double expo = StatMultiplier(frandom(0,aim));
+            double dmult = StatMultiplier(atk);
             new = floor((ddmg * dmult) ** expo);
         }
     }
