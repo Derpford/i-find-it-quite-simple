@@ -48,6 +48,7 @@ class DLCBrain : Thinker {
         let pack = FindDLC(bought);
         if (pack) {
             Console.printf("You got the %s!",pack.packname);
+            pack.OnBuy(SimplePlayer(buyer));
             buyer.A_Print(String.Format("You got the %s!",pack.packname),0,"DBIGFONT");
         }
         // And add it to the list.
@@ -179,23 +180,20 @@ class DLCBuyButton : Inventory {
     }
 }
 
-class DLCMonsterSpawner : RandomSpawner {
-    // Like the WeaponSpawner, but for monsters.
+class WeightedRandomSpawner : RandomSpawner {
     mixin WeightedRandom;
-    string category;
-    int tier;
-    Property Category: category,tier; // Which kind of monster should spawn here?
+
+    virtual void PopList(DLCBrain brain, out Array<string> items, out Array<double> weights) {}
+    // Set up the list here.
 
     override Name ChooseSpawn() {
-        bool nomonsters = sv_nomonsters || level.nomonsters;
-        if (nomonsters) { return "None"; }
         DLCBrain brain = DLCBrain.get();
-        Array<String> monsters;
+        Array<String> items;
         Array<double> weights;
-        brain.GetMonsters(category,tier,monsters,weights);
+        PopList(brain,items,weights);
         int select = WeightedRandom(weights);
         if (select >= 0) {
-            return monsters[select];
+            return items[select];
         } else {
             // Whoops, nothing to spawn.
             return "None";
@@ -203,24 +201,30 @@ class DLCMonsterSpawner : RandomSpawner {
     }
 }
 
-class DLCWeaponSpawner : RandomSpawner {
-    mixin WeightedRandom;
+class DLCMonsterSpawner : WeightedRandomSpawner {
+    // Like the WeaponSpawner, but for monsters.
+    string category;
+    int tier;
+    Property Category: category,tier; // Which kind of monster should spawn here?
+
+    override void PopList(DLCBrain brain, out Array<String> items, out Array<double> weights) {
+        brain.GetMonsters(category,tier,items,weights);
+    }
+
+    override Name ChooseSpawn() {
+        bool nomonsters = sv_nomonsters || level.nomonsters;
+        if (nomonsters) { return "None"; }
+        return super.ChooseSpawn();
+    }
+}
+
+class DLCWeaponSpawner : WeightedRandomSpawner {
     // Picks a random weapon out of available weapons of the appropriate type. Higher tier weapons have higher weight.
     string category;
     Property Category: category; // Which kind of weapon should spawn here?
 
-    override Name ChooseSpawn() {
-        DLCBrain brain = DLCBrain.get();
-        Array<String> weapons;
-        Array<double> weights;
-        brain.GetWeapons(category,weapons,weights);
-        int select = WeightedRandom(weights);
-        if (select >= 0) {
-            return weapons[select];
-        } else {
-            // Whoops, nothing to spawn.
-            return "None";
-        }
+    override void PopList(DLCBrain brain, Array<String> items, Array<double> weights) {
+        brain.GetWeapons(category,items,weights);
     }
 }
 
@@ -237,6 +241,8 @@ class DLCPack : Thinker Abstract {
         Console.printf("Enabled DLC pack \"%s\"", packname);
         return self;
     }
+
+    virtual void OnBuy(SimplePlayer buyer) {} // For DLCs that give you an upgrade or whatever.
 
     DLCPack get() {
         ThinkerIterator it = ThinkerIterator.create(GetClassName(),STAT_STATIC);
