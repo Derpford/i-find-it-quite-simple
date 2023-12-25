@@ -24,6 +24,8 @@ class SimpleHud : BaseStatusBar {
 
         StatBlock sb = StatBlock(plr.FindInventory("StatBlock"));
 
+        TechFlask tf = TechFlask(plr.FindInventory("TechFlask"));
+
         // Bottom of screen stuff.
 		int lbarflags = DI_SCREEN_LEFT_BOTTOM|DI_ITEM_LEFT_BOTTOM;
 		int rbarflags = DI_SCREEN_RIGHT_BOTTOM|DI_ITEM_RIGHT_BOTTOM;
@@ -50,15 +52,15 @@ class SimpleHud : BaseStatusBar {
             vector2 armpos = (xmargin2,marginbottom);
 
             int hp = CPlayer.Health;
-            int arm = plr.CountInv("BasicArmor"); // TODO: Replace armor...?
+            int arm = plr.CountInv("ArmorPoints"); // TODO: Replace armor...?
             int lvl = sb.lvl;
             int xp = sb.xp;
             double atk = sb.atk;
             double aim = sb.aim;
-            double def = sb.def;
+            double end = sb.end;
             double atktf = sb.aniatk;
             double aimtf = sb.aniaim;
-            double deftf = sb.anidef;
+            double endtf = sb.aniend;
 
             // Health and armor.
             Color hpcol = Font.CR_BRICK;
@@ -76,6 +78,12 @@ class SimpleHud : BaseStatusBar {
 
             DrawString(HealthFont,FormatNumber(hp),hpos,ltxtflags,hpcol,scale:hscl);
             DrawString(HealthFont,FormatNumber(arm),armpos,ltxtflags,Font.CR_GREEN,scale:hscl);
+
+            // Techflask values.
+            if (tf) {
+                DrawString(SmallFont,FormatNumber(tf.hpe),hpos + (0,16),ltxtflags,hpcol);
+                DrawString(SmallFont,FormatNumber(tf.arme),armpos + (0,16),ltxtflags,hpcol);
+            }
 
             // Weapons.
             Inventory inv = plr.inv;
@@ -157,8 +165,8 @@ class SimpleHud : BaseStatusBar {
             // Stat block time.
             DrawString(StatFont,String.Format("ATK: %d",atk),statblockpos+(atktf,0),ltxtflags,Font.CR_ICE);
             DrawString(StatFont,String.Format("AIM: %d",aim),statblockpos+(aimtf,-16),ltxtflags,Font.CR_ICE);
-            DrawString(StatFont,String.Format("DEF: %d",def),statblockpos+(deftf,-32),ltxtflags,Font.CR_ICE);
-            DrawString(StatFont,String.Format("LVL: %d",lvl),statblockpos+(atktf+aimtf+deftf,-48),Font.CR_DARKGRAY);
+            DrawString(StatFont,String.Format("END: %d",end),statblockpos+(endtf,-31),ltxtflags,Font.CR_ICE);
+            DrawString(StatFont,String.Format("LVL: %d",lvl),statblockpos+(atktf+aimtf+endtf,-48),Font.CR_DARKGRAY);
 
         }
     }
