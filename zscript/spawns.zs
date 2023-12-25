@@ -47,6 +47,20 @@ class BFGSpawn : DLCWeaponSpawner replaces BFG9000 {
     }
 }
 
+// Armors.
+
+class LowArmorSpawn : DLCArmorSpawner replaces GreenARmor {
+    default {
+        DLCArmorSpawner.tier 1;
+    }
+}
+
+class HighArmorSpawn : DLCArmorSpawner replaces BlueArmor {
+    default {
+        DLCArmorSpawner.tier 2;
+    }
+}
+
 // Monsters.
 
 class ZombSpawn1 : DLCMonsterSpawner replaces ZombieMan {
