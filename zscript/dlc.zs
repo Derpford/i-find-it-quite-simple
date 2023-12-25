@@ -63,7 +63,7 @@ class DLCBrain : Thinker {
         let dlc = dlcs[idx];
         let pack = FindDLC(dlc);
         if (pack) {
-            removethings.append(pack.weapons);
+            removethings.append(pack.items);
             removethings.append(pack.monsters);
         }
     }
@@ -71,7 +71,7 @@ class DLCBrain : Thinker {
     void GetWeapons(string category, out Array<string> weapons, out Array<double> weights) {
         foreach (pack : dlcs) {
             let d = FindDLC(pack);
-            foreach (wep : d.weapons) {
+            foreach (wep : d.items) {
                 Class<Actor> it = wep;
                 if (it) {
                     let wep = SimpleWeapon(GetDefaultByType(it));
@@ -81,6 +81,25 @@ class DLCBrain : Thinker {
                             weapons.push(wep.GetClassName());
                             weights.push(wep.rarity + 1); // Weight of 0 breaks things.
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    void GetArmors(int spawnTier, out Array<string> items, out Array<double> weights) {
+        foreach (pack : dlcs) {
+            let d = FindDLC(pack);
+            foreach (item : d.items) {
+                Class<Actor> it = item;
+                if (it) {
+                    let it = ArmorMod(GetDefaultByType(it));
+                    if (it) {
+                        double t = it.tier;
+                        double st= spawnTier;
+                        double div = min(t,st) / max(t,st);
+                        items.push (it.GetClassName());
+                        weights.push (it.rarity+1);
                     }
                 }
             }
@@ -228,10 +247,19 @@ class DLCWeaponSpawner : WeightedRandomSpawner {
     }
 }
 
+class DLCArmorSpawner : WeightedRandomSpawner {
+    int tier;
+    Property Tier : tier;
+
+    override void PopList(DLCBrain brain, Array<String> items, Array<double> weights) {
+        brain.GetArmors(tier,items,weights);
+    }
+}
+
 class DLCPack : Thinker Abstract {
     // Contains a list of weapons and monsters unlocked by this pack.
-    Array<String> weapons;
     Array<String> monsters;
+    Array<String> items;
 
     string packname;
 
@@ -267,12 +295,15 @@ class BasePack : DLCPack {
     override void setup() {
         packname = "Base Content";
         // Weapons
-        weapons.push("SimplePistol");
-        weapons.push("SimpleShotgun");
-        weapons.push("StockRifle");
-        weapons.push("SimpleGrenade");
-        weapons.push("RawketLawnchair");
-        weapons.push("SimplePlasma");
+        items.push("SimplePistol");
+        items.push("SimpleShotgun");
+        items.push("StockRifle");
+        items.push("SimpleGrenade");
+        items.push("RawketLawnchair");
+        items.push("SimplePlasma");
+        // Armors
+        items.push("SecurityArmor");
+        items.push("ReactiveArmor");
         // Monsters
         monsters.push("PistolZombie");
         monsters.push("ShotZombie");
@@ -283,7 +314,7 @@ class BoomstickPack : DLCPack {
     // A simple DLC pack that adds the Double Barrel and Double Barrel Zombie.
     override void setup() {
         packname = "Boomstick Pack";
-        weapons.push("DoubleBarrel");
+        items.push("DoubleBarrel");
         monsters.push("DBZombie");
     }
 }
@@ -293,7 +324,7 @@ class HeavyPack : DLCPack {
     // Also the Chaingun Zombie.
     override void setup() {
         packname = "Heavy Weapons Pack";
-        weapons.push("AssaultCannon");
+        items.push("AssaultCannon");
         monsters.push("ChaingunZombie");
     }
 }
