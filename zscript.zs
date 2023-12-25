@@ -8,6 +8,8 @@ version "4.10"
 #include "zscript/mixins.zs"
 #include "zscript/spawns.zs"
 #include "zscript/dlc.zs"
+#include "zscript/potion.zs"
+#include "zscript/armor.zs"
 #include "zscript/cash.zs"
 #include "zscript/monster.zs"
 // Weapons.
