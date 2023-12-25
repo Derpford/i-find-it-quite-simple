@@ -8,14 +8,15 @@ class ArmorMod : Inventory {
     Property AP: spawnAP;
 
     int tier; // Like with weapons, tier affects which armor spawn spots get this armor.
-    Property Tier: tier;
+    int rarity; // Higher rarity means more valuable.
+    Property Tier: tier, rarity;
 
     default {
         Inventory.Amount 1;
         Inventory.MaxAmount 1;
         ArmorMod.Save 0.5;
         ArmorMod.AP 0;
-        ArmorMod.Tier 1;
+        ArmorMod.Tier 1, 0;
     }
 
     override void AttachToOwner(Actor other) {
@@ -72,6 +73,7 @@ class SecurityArmor : ArmorMod {
         ArmorMod.Save 0.5;
         ArmorMod.AP 75;
         Inventory.PickupMessage "Security Armor! (-5 incoming damage)";
+        ArmorMod.Tier 1,0;
     }
 
     override void AbsorbDamage(int dmg, Name mod, out int new, Actor inf, Actor src, int flags) {
@@ -90,6 +92,7 @@ class ReactiveArmor : ArmorMod {
         ArmorMod.Save 0.9;
         ArmorMod.AP 200;
         Inventory.PickupMessage "Reactive Armor! (high save percent)";
+        ArmorMod.Tier 2,1;
     }
 
     states {
