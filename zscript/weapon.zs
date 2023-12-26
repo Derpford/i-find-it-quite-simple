@@ -14,7 +14,6 @@ class SimpleWeapon : Weapon abstract {
     default {
         SimpleWeapon.Mag -1;
         SimpleWeapon.TubeLoad false;
-        +WEAPON.AMMO_OPTIONAL;
     }
 
     override void PostBeginPlay() {
