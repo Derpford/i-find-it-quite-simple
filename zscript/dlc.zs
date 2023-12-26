@@ -301,6 +301,7 @@ class BasePack : DLCPack {
         items.push("SimpleGrenade");
         items.push("RawketLawnchair");
         items.push("SimplePlasma");
+        items.push("SimpleBFG");
         // Armors
         items.push("SecurityArmor");
         items.push("ReactiveArmor");
