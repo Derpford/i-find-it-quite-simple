@@ -3,6 +3,8 @@ class SimplePlayer : DoomPlayer {
         Player.StartItem "StatBlock";
         Player.StartItem "SimplePistol";
         Player.StartItem "DLCBuyButton";
+        Player.StartItem "TechFlask";
+        Player.StartItem "ArmorMod";
         Player.StartItem "ScoreItem", 500;
     }
 
