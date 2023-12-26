@@ -160,17 +160,20 @@ class MonsterLevelHandler : EventHandler {
 }
 
 class XPDropHandler : EventHandler {
+    void TossOrb(Actor origin, Name it, int val) {
+        let orb = Inventory(origin.Spawn(it,origin.pos));
+        orb.amount = val;
+        orb.Vel3DFromAngle(frandom(4,12),frandom(0,360),frandom(-20,-60));
+    }
     override void WorldThingDied(WorldEvent e) {
         // When a thing dies, if it's a monster, spawn an appropriate amount of XP Orbs.
         int val = e.Thing.SpawnHealth();
         int orbspawns = val % 4;
         if (orbspawns == 0) { orbspawns = 4; }
         int valperorb = val / orbspawns;
+        TossOrb(e.Thing,"XPOrb",valperorb);
 
         for (int i = 0; i < orbspawns; i++) {
-            let orb = Inventory(e.Thing.Spawn("XPOrb",e.Thing.pos));
-            orb.amount = valperorb;
-            orb.Vel3DFromAngle(frandom(4,12),frandom(0,360),frandom(-20,-60));
         }
         // Do it again, but for cash, this time selecting a random coin each time.
         for (int i = 0; i < orbspawns; i++) {
@@ -183,16 +186,24 @@ class XPDropHandler : EventHandler {
                     ctype = "CopperCoin";
                     break;
                 case 1:
-                    ctype = "SilverCoin";
+                    ctype = stype;
                     break;
                 case 2:
-                    ctype = "GoldCoin";
+                    ctype = gtype;
                     break;
             }
 
-            let orb = Inventory(e.Thing.Spawn(ctype,e.Thing.pos));
-            orb.amount = valperorb;
-            orb.Vel3DFromAngle(frandom(4,12),frandom(0,360),frandom(-20,-60));
+            TossOrb(e.Thing,ctype,valperorb);
+        }
+
+        // Finally, drop some Essence.
+        for (int i = 0; i < orbspawns; i++) {
+            Array<String> essences;
+            essences.push("HealthEssence");
+            essences.push("ArmorEssence");
+            // TODO: add AmmoEssence depending on whether the killer has the Rip And Tear upgrade.
+            int sel = random(0,essences.size() - 1);
+            TossOrb(e.Thing,Name(essences[sel]),valperorb);
         }
     }
 }
