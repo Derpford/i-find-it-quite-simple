@@ -73,6 +73,12 @@ class SimpleBFG : SimpleWeapon {
             SetTag(GetNewTag());
         }
     }
+
+    action void FireBall() {
+        A_FireProjectile("SimpleBFGBall");
+        A_StartSound("weapons/plasmax",pitch:1.1);
+        A_GunFlash();
+    }
     
     states {
         Spawn:
@@ -91,9 +97,40 @@ class SimpleBFG : SimpleWeapon {
             Loop;
         
         Fire:
-            BFGG A 5;
+            BFGG A 5 FireBall();
             BFGG B 10;
-            BFGG A 10;
+            BFGG A 10 A_Refire();
             Goto Ready;        
+        
+        Flash:
+            BFGF A 7 Bright A_Light1();
+            BFGF B 5 Bright A_Light2();
+            Stop;
+    }
+}
+
+class SimpleBFGBall : Actor {
+    default {
+        PROJECTILE;
+        RenderStyle "Add";
+        DamageFunction (128);
+        Speed 50;
+        +BRIGHT;
+        Radius 20;
+        Height 20;
+        DeathSound "weapons/plasmax";
+    }
+
+    states {
+        Spawn:
+            BFS1 AB 3;
+            Loop;
+        
+        Death:
+            BFE1 AB 3;
+            BFE1 C 4 A_Explode(128);
+            BFE1 DE 4;
+            BFE1 F 5;
+            Stop;
     }
 }
