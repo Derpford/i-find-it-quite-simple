@@ -121,6 +121,11 @@ class XPOrb : VacuumChase {
         return String.Format("XP +%d",amount);
     }
     
+    override void Tick() {
+        super.Tick();
+        WaggleTick();
+    }
+    
     states {
         Spawn:
             XGEM AB 5;
@@ -239,8 +244,7 @@ mixin class WaggleBob {
         return (atan(base / cap) / 180.) * 2 * cap;
     }
 
-    override void Tick() {
-        Super.Tick();
+    void WaggleTick() {
         if (rollrate == 0) { rollrate = frandom(18,24); }
         roll = sin(GetAge() * rollrate) * 15;
 
