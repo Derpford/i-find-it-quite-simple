@@ -64,18 +64,26 @@ class TechFlask : Inventory {
                 owner.GiveInventory("ArmorPoints",1);
                 arme -= ArmVal;
             }
-            // TODO: Armor calculations.
+        }
+
+        if (flaskxp > EssenceCap) {
+            flaskxp -= EssenceCap;
+            flasklvl += 1;
         }
     }
 }
 
 class Essence : VacuumChase {
+    Mixin WaggleBob;
     Color col;
     Property Color : col;
+    bool waggle;
+    Property Waggle: waggle;
     default {
         Inventory.Amount 100;
         Inventory.MaxAmount 10000;
         Essence.Color "Blue";
+        Essence.Waggle true;
     }
 
     override void AttachToOwner(Actor other) {
@@ -84,18 +92,20 @@ class Essence : VacuumChase {
 
     override void Tick() {
         super.Tick();
+        if (waggle) { WaggleTick(); }
         FSpawnParticleParams p;
         double ang = frandom(0,360);
         vector2 xyvel = RotateVector((0,frandom(0.5,1.5)),ang);
         double zvel = 1.0;
         p.color1 = col;
+        p.Texture = TexMan.CheckForTexture("PUFFA0");
         p.pos = pos;
-        p.vel = (xyvel.x,xyvel.y,zvel);
-        p.accel.xy = -(2.5 * xyvel * 1./35.);
+        p.vel = (xyvel.x,xyvel.y,zvel) * scale.x;
+        p.accel.xy = -(2.5 * xyvel * 1./35.) * scale.x;
         p.accel.z = 1./35.;
-        p.style = STYLE_Normal;
+        p.style = STYLE_Shaded;
         p.lifetime = 35;
-        p.size = 24;
+        p.size = 24 * scale.x;
         p.sizestep = -0.5;
         p.startalpha = 1.0;
         p.fadestep = -1;
@@ -115,6 +125,34 @@ class HealthEssence : Essence replaces HealthBonus {
         Inventory.Amount 100;
         Inventory.PickupMessage "Health Essence";
         Essence.Color "Blue";
+    }
+}
+
+class SmallKit : HealthEssence replaces Stimpack {
+    default {
+        Inventory.Amount 1000;
+        Inventory.PickupMessage "Health Kit (Small)";
+        Essence.Waggle false;
+    }
+
+    states {
+        Spawn:
+            STIM A -1;
+            Stop;
+    }
+}
+
+class MediumKit : HealthEssence replaces Medikit {
+    default {
+        Inventory.Amount 2000;
+        Inventory.PickupMessage "Health Kit (Medium)";
+        Essence.Waggle false;
+    }
+
+    states {
+        Spawn:
+            MEDI A -1;
+            Stop;
     }
 }
 
