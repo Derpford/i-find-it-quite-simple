@@ -109,7 +109,10 @@ class Essence : VacuumChase {
         p.sizestep = -0.5;
         p.startalpha = 1.0;
         p.fadestep = -1;
-        p.flags = SPF_FULLBRIGHT | SPF_NOTIMEFREEZE;
+        p.startroll = frandom(0,90);
+        p.rollvel = frandom(-1,1);
+        p.rollacc = frandom(-2,2);
+        p.flags = SPF_FULLBRIGHT | SPF_NOTIMEFREEZE | SPF_ROLL;
         LevelLocals.SpawnParticle(p);
     }
 
