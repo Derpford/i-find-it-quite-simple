@@ -49,7 +49,7 @@ class BFGSpawn : DLCWeaponSpawner replaces BFG9000 {
 
 // Armors.
 
-class LowArmorSpawn : DLCArmorSpawner replaces GreenARmor {
+class LowArmorSpawn : DLCArmorSpawner replaces GreenArmor {
     default {
         DLCArmorSpawner.tier 1;
     }
