@@ -55,6 +55,8 @@ class SimpleBFG : SimpleWeapon {
         Weapon.AmmoType1 "Cell";
         Weapon.AmmoUse1 5;
         Weapon.AmmoGive1 40;
+        Weapon.AmmoType2 "Cell";
+        Weapon.AmmoUse2 1;
         SimpleWeapon.AmmoDrop "Cell";
 
         Inventory.PickupMessage "Bagged the BFG10K! Impressive.";
@@ -80,6 +82,16 @@ class SimpleBFG : SimpleWeapon {
         A_GunFlash();
     }
     
+    action void FireBeam() {
+        A_FireProjectile("SimpleBFGBeam");
+        A_StartSound("weapons/plasmaf",pitch:0.8);
+        if (frandom(0,1) > 0.5) {
+            A_GunFlash("Flash2");
+        } else {
+            A_GunFlash("Flash3");
+        }
+    }
+    
     states {
         Spawn:
             BFUG A -1;
@@ -98,13 +110,24 @@ class SimpleBFG : SimpleWeapon {
         
         Fire:
             BFGG A 5 FireBall();
-            BFGG B 10;
+            BFGG B 5;
             BFGG A 10 A_Refire();
             Goto Ready;        
         
+        AltFire:
+            BFGG AB 1 FireBeam();
+            BFGG A 15 A_Refire();
+            Goto Ready;
+        
         Flash:
-            BFGF A 7 Bright A_Light1();
             BFGF B 5 Bright A_Light2();
+            BFGF A 3 Bright A_Light1();
+            Stop;
+        Flash2:
+            BFGF A 1 Bright;
+            Stop;
+        Flash3:
+            BFGF B 1 Bright;
             Stop;
     }
 }
@@ -131,6 +154,29 @@ class SimpleBFGBall : Actor {
             BFE1 C 4 A_Explode(128);
             BFE1 DE 4;
             BFE1 F 5;
+            Stop;
+    }
+}
+
+class SimpleBFGBeam : Actor {
+    default {
+        PROJECTILE;
+        +RIPPER;
+        RenderStyle "Add";
+        DamageFunction (8);
+        Speed 40;
+        +BRIGHT;
+        Radius 20;
+        Height 20;
+    }
+
+    states {
+        Spawn:
+            BFS1 AB 2;
+            Loop;
+        
+        Death:
+            BFE1 ABCDE 2;
             Stop;
     }
 }
