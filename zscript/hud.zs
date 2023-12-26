@@ -23,8 +23,8 @@ class SimpleHud : BaseStatusBar {
         let plr = SimplePlayer(CPlayer.mo);
 
         StatBlock sb = StatBlock(plr.FindInventory("StatBlock"));
-
         TechFlask tf = TechFlask(plr.FindInventory("TechFlask"));
+        ArmorMod am = ArmorMod(plr.FindInventory("ArmorMod",true));
 
         // Bottom of screen stuff.
 		int lbarflags = DI_SCREEN_LEFT_BOTTOM|DI_ITEM_LEFT_BOTTOM;
@@ -53,6 +53,7 @@ class SimpleHud : BaseStatusBar {
 
             int hp = CPlayer.Health;
             int arm = plr.CountInv("ArmorPoints"); // TODO: Replace armor...?
+            Color acol = am.col;
             int lvl = sb.lvl;
             int xp = sb.xp;
             double atk = sb.atk;
@@ -64,7 +65,9 @@ class SimpleHud : BaseStatusBar {
 
             // Health and armor.
             Color hpcol = Font.CR_BRICK;
-            if (hp < 34) {
+            if (hp <= 0) {
+                hpcol = Font.CR_RED;
+            } else if (hp < 34) {
                 hpcol = Font.CR_ORANGE;
             } else if (hp < 67) {
                 hpcol = Font.CR_YELLOW;
@@ -73,28 +76,30 @@ class SimpleHud : BaseStatusBar {
             } else if (hp > 100) {
                 hpcol = Font.CR_CYAN;
             } else {
-                hpcol = Font.CR_DARKGRAY; // Presumably, you're dead if you got to here.
+                hpcol = Font.CR_DARKGRAY; // How did you get here?.
             }
 
             DrawString(HealthFont,FormatNumber(hp),hpos,ltxtflags,hpcol,scale:hscl);
-            DrawString(HealthFont,FormatNumber(arm),armpos,ltxtflags,Font.CR_GREEN,scale:hscl);
+            DrawString(HealthFont,FormatNumber(arm),armpos,ltxtflags,acol,scale:hscl);
 
             // Techflask values.
             if (tf) {
                 DrawString(SmallFont,FormatNumber(tf.hpe),hpos + (0,16),ltxtflags,hpcol);
-                DrawString(SmallFont,FormatNumber(tf.arme),armpos + (0,16),ltxtflags,hpcol);
+                DrawString(SmallFont,FormatNumber(tf.arme),armpos + (0,16),ltxtflags,acol);
             }
 
             // Weapons.
             Inventory inv = plr.inv;
             int sel = -1;
             Array<string> categories;
+            categories.resize(7);
             while (inv) {
                 if (inv is "SimpleWeapon") {
                     SimpleWeapon s = SimpleWeapon(inv);
-                    categories.push(String.Format("%s [%d]",s.category, s.slotnumber));
+                    int slot = s.slotnumber - 1;
+                    categories[slot] = String.Format("%s [%d]",s.GetTag(), s.slotnumber);
                     if (CPlayer.ReadyWeapon == inv) {
-                        sel = categories.size() - 1; // Latest item in the array is selected.
+                        sel = slot; // Latest item in the array is selected.
                     }
                 }
                 inv = inv.inv;
