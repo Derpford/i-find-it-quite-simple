@@ -19,12 +19,10 @@ class TechFlask : Inventory {
         if (block) {
             double mult = block.StatMultiplier(block.end);
             amt = amt * mult;
-            console.printf("Essence amount: %d",amt);
         }
         int cap = (flasklvl+1) * EssenceCap;
         int total = essence + amt;
         int actual = min(cap, essence + amt);
-        console.printf("Total: %d + %d = %d",essence,amt,actual);
         int xpgain = max(0,total - actual);
         flaskxp += xpgain;
         return actual;
@@ -46,7 +44,8 @@ class TechFlask : Inventory {
         }
 
         if (handled) {
-            item.GoAwayAndDie();
+            // item.GoAwayAndDie();
+            item.bPICKUPGOOD = true;
             return true;
         } else {
             return false;
@@ -70,39 +69,72 @@ class TechFlask : Inventory {
     }
 }
 
-class HealthEssence : Inventory replaces HealthBonus {
+class Essence : VacuumChase {
+    Color col;
+    Property Color : col;
     default {
         Inventory.Amount 100;
         Inventory.MaxAmount 10000;
-        Inventory.PickupMessage "Health Essence";
+        Essence.Color "Blue";
+    }
+
+    override void AttachToOwner(Actor other) {
+        return; // Never actually attaches to the player! Only works with techflask.
+    }
+
+    override void Tick() {
+        super.Tick();
+        FSpawnParticleParams p;
+        double ang = frandom(0,360);
+        vector2 xyvel = RotateVector((0,frandom(0.5,1.5)),ang);
+        double zvel = 1.0;
+        p.color1 = col;
+        p.pos = pos;
+        p.vel = (xyvel.x,xyvel.y,zvel);
+        p.accel.xy = -(2.5 * xyvel * 1./35.);
+        p.accel.z = 1./35.;
+        p.style = STYLE_Normal;
+        p.lifetime = 35;
+        p.size = 24;
+        p.sizestep = -0.5;
+        p.startalpha = 1.0;
+        p.fadestep = -1;
+        p.flags = SPF_FULLBRIGHT | SPF_NOTIMEFREEZE;
+        LevelLocals.SpawnParticle(p);
     }
 
     states {
         Spawn:
-            BON1 ABCDCB 3 Bright;
-            Loop;
+            TNT1 A -1;
+            Stop;
     }
 }
 
-class ArmorEssence : Inventory replaces ArmorBonus {
+class HealthEssence : Essence replaces HealthBonus {
+    default {
+        Inventory.Amount 100;
+        Inventory.PickupMessage "Health Essence";
+        Essence.Color "Blue";
+    }
+}
+
+class ArmorEssence : Essence replaces ArmorBonus {
     default {
         Inventory.Amount 150;
-        Inventory.MaxAmount 10000;
         Inventory.PickupMessage "Armor Essence";
+        Essence.Color "Green";
     }
 
-    states {
-        Spawn:
-            BON2 ABCDCB 3 Bright;
-            Loop;
+    override void AttachToOwner(Actor other) {
+        return; // Never actually attaches to the player! Only works with techflask.
     }
 }
 
-class AmmoEssence : Inventory {
+class AmmoEssence : Essence {
     // Need to find sprites for this...
     default {
         Inventory.Amount 100;
-        Inventory.MaxAmount 10000;
         Inventory.PickupMessage "Ammo Essence";
+        Essence.Color "Red";
     }
 }
