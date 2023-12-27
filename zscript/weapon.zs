@@ -44,11 +44,22 @@ class SimpleWeapon : Weapon abstract {
     }
 
     override bool CheckAmmo(int firemode, bool autoswitch, bool required, int count) {
-        int reserve = magcap;
+        int reserve = mag;
+        int a1 = owner.CountInv(AmmoType1);
+        int a2 = owner.CountInv(AmmoType2);
         if (firemode == PrimaryFire && AmmoType1) {
-            reserve = owner.CountInv(AmmoType1);
+            reserve = a1;
         } else if (firemode == AltFire && AmmoType2) {
-            reserve = owner.CountInv(AmmoType2);
+            reserve = a2;
+        } else {
+            // firemode == EitherFire 
+            // This is for switching, probably.
+            if (AmmoType1 || AmmoType2) {
+                // This weapon cares about ammo.
+                return a1 > 0 || a2 > 0;
+            } else {
+                return true; // This is an infinite-ammo weapon like a pistol.
+            }
         }
         if (magcap > 0) {
             return mag > 0 && reserve > 0;
