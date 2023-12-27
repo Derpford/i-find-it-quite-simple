@@ -3,7 +3,7 @@ class StockRifle : SimpleWeapon {
     default {
         Tag "Stock Rifle";
         SimpleWeapon.Category "RIFLE",0;
-        SimpleWeapon.Mag 25;
+        SimpleWeapon.Mag 24;
 
         Weapon.SlotNumber 2;
         Weapon.AmmoType1 "Clip";
@@ -15,7 +15,7 @@ class StockRifle : SimpleWeapon {
 
     action void FireRifle() {
         Hitscan((0.5,2),1,random(16,24));
-        A_StartSound("weapons/pistol");
+        A_StartSound("weapons/rifle1");
         A_Overlay(-2,"Flash");
         A_OverlayFlags(-2,PSPF_RENDERSTYLE,true);
         invoker.mag--;
@@ -68,8 +68,15 @@ class StockRifle : SimpleWeapon {
         
         Fire:
             SMGG A 0 FireRifle();
-            SMGG A 2 A_WeaponOffset(0,10,WOF_ADD);
-            SMGG A 4 A_WeaponOffset(0,-10,WOF_ADD);
+            SMGG A 1 A_WeaponOffset(0,10,WOF_ADD);
+            SMGG A 2 A_WeaponOffset(0,-10,WOF_ADD);
+            SMGG A 0 FireRifle();
+            SMGG A 1 A_WeaponOffset(0,10,WOF_ADD);
+            SMGG A 2 A_WeaponOffset(0,-10,WOF_ADD);
+            SMGG A 0 FireRifle();
+            SMGG A 1 A_WeaponOffset(0,10,WOF_ADD);
+            SMGG A 2 A_WeaponOffset(0,-10,WOF_ADD);
+            SMGG A 6;
             SMGG A 0 A_Refire();
             Goto Ready;
         
