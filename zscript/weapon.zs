@@ -61,7 +61,7 @@ class SimpleWeapon : Weapon abstract {
                 return true; // This is an infinite-ammo weapon like a pistol.
             }
         }
-        if (magcap > 0) {
+        if (magcap > 0 && firemode == PrimaryFire) { // Only the primary fire uses the mag.
             return mag > 0 && reserve > 0;
         } else {
             return super.CheckAmmo(firemode,autoswitch,required,count);
