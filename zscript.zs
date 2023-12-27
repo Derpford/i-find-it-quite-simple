@@ -24,6 +24,7 @@ version "4.10"
 // Medium Rare, the uncommon tier
 #include "zscript/weapons/mediumrare/double.zs"
 #include "zscript/weapons/mediumrare/assault.zs"
+#include "zscript/weapons/mediumrare/rifle.zs"
 // Rare, the...rare tier
 // RAW, the Epic tier
 
