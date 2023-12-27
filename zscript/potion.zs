@@ -98,12 +98,17 @@ class Essence : VacuumChase {
         vector2 xyvel = RotateVector((0,frandom(0.5,1.5)),ang);
         double zvel = 1.0;
         p.color1 = col;
-        p.Texture = TexMan.CheckForTexture("PUFFA0");
+        if (frandom(0,1) > 0.5) {
+            p.Texture = TexMan.CheckForTexture("BAL2A0");
+        } else {
+            p.Texture = TexMan.CheckForTexture("BAL2B0");
+        }
         p.pos = pos;
+        p.pos.z += 4;
         p.vel = (xyvel.x,xyvel.y,zvel) * scale.x;
         p.accel.xy = -(2.5 * xyvel * 1./35.) * scale.x;
         p.accel.z = 1./35.;
-        p.style = STYLE_Shaded;
+        p.style = STYLE_Add;
         p.lifetime = 35;
         p.size = 24 * scale.x;
         p.sizestep = -0.5;
@@ -112,7 +117,7 @@ class Essence : VacuumChase {
         p.startroll = frandom(0,90);
         p.rollvel = frandom(-1,1);
         p.rollacc = frandom(-2,2);
-        p.flags = SPF_FULLBRIGHT | SPF_NOTIMEFREEZE | SPF_ROLL;
+        p.flags = SPF_FULLBRIGHT | SPF_NOTIMEFREEZE | SPF_ROLL | SPF_NO_XY_BILLBOARD;
         LevelLocals.SpawnParticle(p);
     }
 
@@ -127,7 +132,7 @@ class HealthEssence : Essence replaces HealthBonus {
     default {
         Inventory.Amount 100;
         Inventory.PickupMessage "Health Essence";
-        Essence.Color "Blue";
+        Essence.Color "22 33 FF";
     }
 }
 
@@ -163,7 +168,7 @@ class ArmorEssence : Essence replaces ArmorBonus {
     default {
         Inventory.Amount 150;
         Inventory.PickupMessage "Armor Essence";
-        Essence.Color "Green";
+        Essence.Color "22 AA 11";
     }
 
     override void AttachToOwner(Actor other) {
