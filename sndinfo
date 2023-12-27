@@ -4,3 +4,7 @@ HellStorm/Reload	HSTMRELD
 HellStorm/Hit		HSTMHIT
 
 $Limit HellStorm/Hit 0
+
+// todo
+$alias weapons/rifle1 weapons/pistol
+$alias weapons/rifle2 weapons/pistol
