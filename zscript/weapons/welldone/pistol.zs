@@ -8,7 +8,7 @@ class SimplePistol : SimpleWeapon {
     }
 
     action void FirePistol() {
-        A_FireBullets(2,2,-1,random(8,12),flags:FBF_USEAMMO|FBF_NORANDOM);
+        Hitscan((2,2),1,random(8,12));
         A_StartSound("weapons/pistol");
         invoker.mag--;
     }
