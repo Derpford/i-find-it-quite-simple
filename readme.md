@@ -77,3 +77,70 @@ Weapons that are omnicidal. Replaces BFG spawns.
 - Davy Crockett (Medium Rare): Is that a fucking nuke? Consumes 10 rockets to fire a single, massive explosive--utterly destroying most targets, and forcing radius damage even on targets that are normally immune. The impact zone becomes radioactive, doing mild damage over time to anybody walking through it and painlocking monsters. Does not need an altfire. (What is wrong with you?) Thank God the Cyberdemons haven't figured out how to use it. (They're too stupid to use a rocket launcher they can self-damage with.) Unlocked with the Nuclear Winter Pack.
 - The Right Hand of Benellus (Rare): Blessed by the Shotgod himself, this shotgun crams 20 shells into the same two barrels, firing 216 pellets (108 for each barrel) and doing 15 damage per pellet (because blessed pellets do max damage). Altfire offers a prayer to Benellus, turning all ammo pickups in a 128 unit radius around the player into shells. Unlocked by the Benellus's Grace Pack.
 - Miami Sunset (RAW): Wait a second, this is from a different mod! Enormous gatling gun, consuming bullets at insane speeds to create a stream of molten lead that rips through any target. Altfire spins up the gun, alerting and temporarily fearing all monsters on the map; now is coward killing time! Drops from certain Spider Mastermind variants if you've unlocked the Boss Rush Pack. Unlocks with the Miami Sunrise Pack.
+
+## Armor Mods
+Rather than breaking when you run out of armor, Armor Mods continue functioning--although they won't be able to absorb damage unless you have armor points.
+
+Armor mods also give some armor points on first pickup, but when dropped, they don't give any. You can tell an armor mod is 'spent' when it's translucent.
+
+While you're holding an Armor Mod, you must hold the +USE key to pick up new ones. This drops the old one. (You can't have more than one Armor Mod at a time.)
+
+### Basic Armor Mods
+Unlocked by default.
+- Security Armor: Version 2 of the "Green" class armor vest. 50% damage absorption. Subtracts 5 from incoming damage. Gives 75 AP.
+- Reactive Armor: V2 of the "Blue" class armor vest. 90% damage absorption, gives 200 AP, empties fast.
+
+### Cyber Armor Mods
+Unlocked with the Future Pack.
+- Targeting Armor: Enhances your attacks with micro-adjustments to your firing stance. While you have AP, you gain a damage boost. 60% absorb, gives 100 AP.
+- Bloodfuel Armor: Hell is full. Doing damage grants you Health Essence. However, the armor only gives 20% absorption and 100 AP.
+
+### Magic Armor Mods
+Unlocked with the Past Pack.
+- Chainmail of Deflection: Reduces incoming damage by 10, and deals 10 damage to the attacker in the process if you have AP. 50% absorb, 100 AP.
+- Plate Mail of Brawn: Completely negates incoming attacks at a rate of 3 AP per attack. Comes with 60 AP.
+
+### Energy Armor Mods
+Unlocked with the Shields Pack.
+- Forcefield: 100% absorption, and generates Armor Essence on absorbing damage, but doubles incoming damage while the shield is up. Comes with 200 AP.
+- Amplifier: Doesn't absorb damage at all! Instead, it consumes AP to double your damage output, with an AP cost based on the base damage of the attack. Comes with 200 "AP".
+
+### Expert Armor Mods
+Unlocked with the Final Armor pack.
+- Praetor Suit: 100% absorption. Straightforward and simple, like ripping and tearing. Gives 100 AP on pickup.
+- Berserk Suit: 33% absorption. Dealing and taking damage generates all three essence types.
+
+## Weapon Mods
+Each weapon can have two mods applied to it. Mods can be removed at will using the Mod Remover Tool (which removes all mods on the weapon, dropping them in front of you).
+
+Mods typically make a weapon apply a certain effect when its projectiles hit things.
+
+Weapon mods drop from augmented monsters, and can spawn near backpacks.
+
+### Basic Weapon Mods
+Unlocked by default.
+- Bleeding: Targets hit by this weapon bleed for 5 damage per second, indefinitely.
+- Impact: Creates a RadiusThrust on impact.
+
+### Hellfire Weapon Mods
+- Hellfire: Leaves a patch of fire on impact, dealing small amounts of damage in a wide radius.
+- Flare: Attaches a flare to the target, which explodes a couple seconds later for a large amount of damage.
+- Napalm Trail: Projectiles leave a trail of fire in their wake!
+
+### Explosive Weapon Mods
+- Explosive Ammo: Once per second, a shot explodes. Stacks with existing detonations.
+- Destabilizer: Targets hit by this weapon gain Destabilization stacks. On death, monsters explode based on the number of stacks.
+
+### Energy Weapon Mods
+- Plasma: Attacks stack Plasma Charge on the target. Targets zap nearby enemies based on their Plasma Charge stacks.
+- Ripper: Attacks become +RIPPER, but their damage is heavily reduced.
+
+### Weird Weapon Mods
+- Bouncy: Attacks become bouncy.
+- Vampire: Enemies bleed Health Essence!
+- Shrapnel Sucker: Enemies bleed Armor Essence!
+
+### Legendary Weapon Mods
+- Holy Flame: Damages targets for a percentage of their max health.
+- Vorpal: Double damage!
+- Reaper: Checks a small AoE for enemies below a certain health threshold and kills them outright.
