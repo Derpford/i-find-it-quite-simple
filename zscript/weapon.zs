@@ -199,6 +199,10 @@ class SimpleProjectile : Actor {
 
         return super.SpecialMissileHit(victim);
     }
+
+    override int DoSpecialDamage(Actor victim, int dmg, Name mod) {
+        return dmg * DamageMultiply;
+    }
 }
 
 mixin class ModdableProjectile {
