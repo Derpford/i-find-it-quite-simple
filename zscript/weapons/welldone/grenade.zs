@@ -14,7 +14,7 @@ class SimpleGrenade : SimpleWeapon {
     }
 
     action void FireGrenade() {
-        A_FireProjectile("GrenadeShot",pitch: -10);
+        Projectile("GrenadeShot",aoffs: (0,-10));
         A_StartSound("Hellstorm/Fire");
     }
 
@@ -49,7 +49,7 @@ class SimpleGrenade : SimpleWeapon {
     }
 }
 
-class GrenadeShot : Actor {
+class GrenadeShot : SimpleProjectile {
     default {
         PROJECTILE;
         -NOGRAVITY;
@@ -65,7 +65,7 @@ class GrenadeShot : Actor {
             Loop;
         
         Death:
-            MISL B 0 { bNOGRAVITY = true; }
+            MISL B 0 { CallMods(); bNOGRAVITY = true; }
             MISL B 4 Bright A_Explode(128);
             MISL CD 4 Bright;
             Stop;

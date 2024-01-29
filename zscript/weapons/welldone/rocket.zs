@@ -13,7 +13,7 @@ class RawketLawnchair : SimpleWeapon {
     }
 
     action void FireRocket() {
-        A_FireProjectile("SimpleRocket");
+        Projectile("SimpleRocket");
         A_StartSound("weapons/rocklf");
         A_GunFlash();
     }
@@ -47,7 +47,7 @@ class RawketLawnchair : SimpleWeapon {
     }
 }
 
-class SimpleRocket : Actor {
+class SimpleRocket : SimpleProjectile {
     default {
         PROJECTILE;
         Speed 80;
@@ -61,6 +61,7 @@ class SimpleRocket : Actor {
             Loop;
         
         Death:
+            MISL B 0 CallMods();
             MISL B 4 Bright A_Explode(128);
             MISL CD 4 Bright;
             Stop;

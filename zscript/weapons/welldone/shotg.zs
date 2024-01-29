@@ -15,7 +15,7 @@ class SimpleShotgun : SimpleWeapon {
 
     action void FireShotgun() {
         // TODO
-        A_FireBullets(3,2,7,random(7,15),flags:FBF_USEAMMO|FBF_NORANDOM);
+        Hitscan((3,2),7,random(7,15));
         A_StartSound("weapons/sshotf");
         A_GunFlash();
         invoker.mag--;

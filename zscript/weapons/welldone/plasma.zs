@@ -15,17 +15,17 @@ class SimplePlasma : SimpleWeapon {
     }
 
     action void FirePlasma() {
-        A_FireProjectile("BlueBolt");
+        Projectile("BlueBolt");
         A_StartSound("weapons/plasmaf");
         A_GunFlash();
         invoker.mag--;
     }
 
     action void FirePlasmaSpread() {
-        A_FireProjectile("GreenBolt",0,true,spawnofs_xy:-20);
-        A_FireProjectile("GreenBolt",0,false,spawnofs_xy:-8);
-        A_FireProjectile("GreenBolt",0,false,spawnofs_xy:8);
-        A_FireProjectile("GreenBolt",0,false,spawnofs_xy:20);
+        Projectile("GreenBolt",offs:(-20,0));
+        Projectile("GreenBolt",offs:(-8,0));
+        Projectile("GreenBolt",offs:(8,0));
+        Projectile("GreenBolt",offs:(20,0));
         A_StartSound("weapons/plasmaf");
         A_GunFlash();
         invoker.mag -= 4;
@@ -63,7 +63,7 @@ class SimplePlasma : SimpleWeapon {
     }
 }
 
-class BlueBolt : Actor {
+class BlueBolt : SimpleProjectile {
     // A simple blue burst of plasma.
     default {
         PROJECTILE;
@@ -80,6 +80,7 @@ class BlueBolt : Actor {
             PLSS AB 3;
             Loop;
         Death:
+            PLSE A 0 CallMods();
             PLSE ABCDE 4;
             Stop;
     }
@@ -95,6 +96,7 @@ class GreenBolt : BlueBolt {
             APLS AB 3;
             Loop;
         Death:
+            APBX A 0 CallMods();
             APBX ABCDE 4;
             Stop;
     }
