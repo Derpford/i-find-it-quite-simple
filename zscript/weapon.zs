@@ -91,9 +91,23 @@ class SimpleWeapon : Weapon abstract {
         for (int i = 0; i < number; i++) {
             vector2 angs = (invoker.owner.angle + frandom(-spread.x,spread.x),invoker.owner.pitch + frandom(-spread.y,spread.y));
             Actor puff = LineAttack(angs.x,8192,angs.y,damage,mod,"ModdablePuff");
-            if (puff) {
-                if (invoker.wm1) {invoker.wm1.OnFire(puff);}
-                if (invoker.wm2) {invoker.wm2.OnFire(puff);}
+            Actor trail = invoker.owner.SpawnMissile(puff,"Tracer");
+            if (trail) {
+                trail.target = invoker.owner;
+                if (invoker.wm1) {invoker.wm1.OnFire(trail);}
+                if (invoker.wm2) {invoker.wm2.OnFire(trail);}
+            }
+        }
+    }
+
+    action void Projectile(Name type, vector2 spread = (0,0), int number = 1,bool ammo = true, vector2 offs = (0,0),vector2 aoffs = (0,0)) {
+        for (int i = 0; i < number; i++) {
+            vector2 angs = (aoffs.x + frandom(-spread.x,spread.x),aoffs.y + frandom(-spread.y,spread.y));
+            Actor a, real;
+            [a,real] = A_FireProjectile(type,angs.x,ammo,offs.x,offs.y,0,angs.y);
+            if (real) {
+                if (invoker.wm1) {invoker.wm1.OnFire(real);}
+                if (invoker.wm2) {invoker.wm2.OnFire(real);}
             }
         }
     }
@@ -126,14 +140,46 @@ class SimpleWeapon : Weapon abstract {
     }
 }
 
-class ModdablePuff : BulletPuff replaces BulletPuff {
-    // A puff that conveniently always spawns.
+class Tracer : FastProjectile {
+    // A FastProjectile that handles hitscan weapons' on-hit effects,
+    // because doing them with the hitscan is hacky.
+    mixin ModdableProjectile;
+
     default {
-        +PUFFONACTORS;
-        +ALWAYSPUFF;
-        +HITTRACER;
+        Speed 200;
+        MissileHeight 8;
+        MissileType "TracerTrail";
+    }
+    
+    states {
+        Spawn:
+            TNT1 A -1;
+        
+        Death:
+            TNT1 A 0 CallMods();
+            Stop;
     }
 
+}
+
+class TracerTrail : Actor {
+    default {
+        RenderStyle "Add";
+        +NOINTERACTION;
+    }
+
+    states {
+        Spawn:
+            PUFF A 1 A_FadeOut();
+            Loop;
+    }
+}
+
+class SimpleProjectile : Actor {
+    mixin ModdableProjectile;
+}
+
+mixin class ModdableProjectile {
     void CallMods() {
         // Iterates through the inventory and calls all ShotMods.
         Inventory i = inv;
@@ -145,12 +191,14 @@ class ModdablePuff : BulletPuff replaces BulletPuff {
             i = i.inv;
         }
     }
-    
-    states {
-        Spawn:
-            TNT1 A 0;
-            TNT1 A 0 CallMods();
-        Goto Super::Spawn;
+}
+
+class ModdablePuff : BulletPuff replaces BulletPuff {
+    // A puff that conveniently always spawns.
+    default {
+        +PUFFONACTORS;
+        +ALWAYSPUFF;
+        +HITTRACER;
     }
 }
 
@@ -181,6 +229,7 @@ class WeaponMod : Inventory {
         // Do stuff with the projectile here.
         // This usually means adding a ShotModifier, so...
         if (smod) {
+            console.printf("Applied a shot mod: %s",smod);
             proj.GiveInventory(smod,1);
         }
     }
