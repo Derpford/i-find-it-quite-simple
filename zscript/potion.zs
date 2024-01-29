@@ -57,6 +57,7 @@ class TechFlask : Inventory {
     }
 
     override void DoEffect() {
+        if (owner.health <= 0) { return; } // Don't process anything if the owner is dead!
         // Apply health at a rate based on current health.
         hptimer += 40;
         while (hptimer > owner.health) {
