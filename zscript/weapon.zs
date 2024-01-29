@@ -162,6 +162,7 @@ class Tracer : FastProjectile {
         Speed 200;
         MissileHeight 8;
         MissileType "TracerTrail";
+        +HITTRACER;
     }
     
     states {
