@@ -65,7 +65,11 @@ class RipperMod : WeaponMod {
     override void OnFire(Actor proj) {
         console.printf("Appled RIPPER");
         proj.bRIPPER = true;
-        proj.DamageMultiply = 0.2;
+        if (proj.DamageMultiply >= 1) {
+            proj.DamageMultiply = 0.2;
+        } else {
+            proj.DamageMultiply *= 1.5;
+        }
     }
 
     states {
