@@ -10,7 +10,7 @@ class SimplePlasma : SimpleWeapon {
         SimpleWeapon.AmmoDrop "Cell";
         Weapon.AmmoUse1 2;
         Weapon.AmmoGive1 40;
-        Weapon.AmmoUse2 8;
+        Weapon.AmmoUse2 2;
         Inventory.PickupMessage "Pulled a Plasma Gun!";
     }
 
