@@ -5,14 +5,18 @@ class TechFlask : Inventory {
     int flasklvl; // maximums for each type of essence are this * 1000
     const EssenceCap = 10000;
     int flaskxp; // when this is > EssenceCap, increase flask level
+
     static const int AmmoVals[] = { // Ammo worth per unit.
         100, // Clip
         150, // Shell
         250, // Rocket
         250  // Cell
     };
+
     const HPVal = 100;
     const ArmVal = 100; // How much health and armor are worth per unit.
+
+    int hptimer; // Increases every tick. When it's above player's health, subtract player's current health and apply healing.
 
     int AddEssence(int essence, int amt) {
         let block = StatBlock(owner.FindInventory("StatBlock"));
@@ -53,13 +57,17 @@ class TechFlask : Inventory {
     }
 
     override void DoEffect() {
-        if (GetAge() % 5 == 0) {
-            // Every 5 tics, apply 1 point of health and armor.
+        // Apply health at a rate based on current health.
+        hptimer += 40;
+        while (hptimer > owner.health) {
+            hptimer -= owner.health;
             if (owner.health < owner.GetMaxHealth(true) && hpe >= HPVal) {
                 owner.GiveBody(1);
                 hpe -= HPVal;
             }
+        }
 
+        if (GetAge() % 5 == 0) {
             if (owner.CountInv("ArmorPoints") < 200 && arme >= ArmVal) {
                 owner.GiveInventory("ArmorPoints",1);
                 arme -= ArmVal;
