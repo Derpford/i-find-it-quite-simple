@@ -233,6 +233,7 @@ class EShotExplosion: Actor {
     }
     states {
         Spawn:
+            MISL B 0;
             MISL B 3 Bright A_StartSound("weapons/rocklx");
             MISL C 3 Bright A_Explode(128);
             MISL D 3 Bright;
