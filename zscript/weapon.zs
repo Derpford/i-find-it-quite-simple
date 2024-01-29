@@ -52,7 +52,8 @@ class SimpleWeapon : Weapon abstract {
             console.printf("WM1 set");
             return true;
         } else if (!wm2) {
-            wm2 = mod;
+            wm2 = WeaponMod(spawn(mod.GetClassName(),pos));
+            wm2.BecomeItem();
             console.printf("WM2 set");
             return true;
         }
@@ -145,6 +146,18 @@ class Tracer : FastProjectile {
     // because doing them with the hitscan is hacky.
     mixin ModdableProjectile;
 
+    Array<Actor> hits;
+
+    override int SpecialMissileHit (Actor victim) {
+        // If this projectile's been given +RIPPER, trigger its on-hits.
+        int res = super.SpecialMissileHit(victim);
+        if (bRIPPER && res == -1 && victim != target && hits.find(victim) == hits.size()) {
+            CallMods();
+            hits.push(victim);
+        }
+        return res;
+    }
+
     default {
         Speed 200;
         MissileHeight 8;
@@ -177,6 +190,15 @@ class TracerTrail : Actor {
 
 class SimpleProjectile : Actor {
     mixin ModdableProjectile;
+
+    override int SpecialMissileHit (Actor victim) {
+        // If this projectile's been given +RIPPER, trigger its on-hits.
+        if (bRIPPER) {
+            CallMods();
+        }
+
+        return super.SpecialMissileHit(victim);
+    }
 }
 
 mixin class ModdableProjectile {
@@ -184,8 +206,10 @@ mixin class ModdableProjectile {
         // Iterates through the inventory and calls all ShotMods.
         Inventory i = inv;
         while (i) {
+            console.printf("found %s", i.GetTag());
             ShotModifier mod = ShotModifier(i);
             if (mod) {
+                console.printf("Called %s",mod.GetTag());
                 mod.OwnerDied();
             }
             i = i.inv;
@@ -199,93 +223,5 @@ class ModdablePuff : BulletPuff replaces BulletPuff {
         +PUFFONACTORS;
         +ALWAYSPUFF;
         +HITTRACER;
-    }
-}
-
-class WeaponMod : Inventory {
-    // Alters projectiles fired by the weapon it's attached to.
-
-    Name smod;
-    Property ShotMod : smod; // By default, sticks this on the weapon's projectiles.
-
-    default {
-        Inventory.MaxAmount 5; // You should probably use them, though.
-        Inventory.Amount 1;
-        +Inventory.INVBAR;
-        -Inventory.AUTOACTIVATE;
-    }
-
-    override bool Use(bool pick) {
-        SimpleWeapon wep = SimpleWeapon(owner.player.readyweapon);
-        if (wep) {
-            if (wep.AttachMod(self)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    virtual void OnFire(Actor proj) {
-        // Do stuff with the projectile here.
-        // This usually means adding a ShotModifier, so...
-        if (smod) {
-            console.printf("Applied a shot mod: %s",smod);
-            proj.GiveInventory(smod,1);
-        }
-    }
-}
-
-class ShotModifier : Inventory abstract {
-    // Remember to modify OwnerDied to trigger effects.
-}
-
-class ExplosiveMod : WeaponMod {
-    double timer;
-
-    default {
-        WeaponMod.ShotMod "ExplosiveShots";
-    }
-
-    override void Tick() {
-        super.Tick();
-        timer = max(0,timer - (1./35.));
-    }
-
-    override void OnFire(Actor proj) {
-        if (timer <= 0) {
-            super.OnFire(proj);
-            timer = 1.0;
-        }
-    }
-
-    states {
-        Spawn:
-            ROCK A -1;
-            Stop;
-    }
-}
-
-class ExplosiveShots : ShotModifier {
-    // Explodes!
-
-    override void OwnerDied() {
-        let it = owner.Spawn("EShotExplosion",owner.pos);
-        if (it) {
-            it.target = owner.target;
-        }
-    }
-}
-
-class EShotExplosion: Actor {
-    default {
-        +NOGRAVITY;
-    }
-    states {
-        Spawn:
-            MISL B 0;
-            MISL B 3 Bright A_StartSound("weapons/rocklx");
-            MISL C 3 Bright A_Explode(128);
-            MISL D 3 Bright;
-            Stop;
     }
 }
