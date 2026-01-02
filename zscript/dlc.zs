@@ -68,6 +68,22 @@ class DLCBrain : Thinker {
         }
     }
 
+    void GetGenericItem(string c, out Array<string> items, out Array<double> weights) {
+        foreach (pack : dlcs) {
+            let d = FindDLC(pack);
+            foreach (i : d.items) {
+                Class<Actor> it = i;
+                Class<Actor> filter = c;
+                if (it && it is filter) {
+                    items.push(it.GetClassName());
+                    weights.push(1); // Behaves like an unweighted random...
+                    // because there isn't really a good way to handle this generically.
+                    // It's not like I can check for inclusion of a particular mixin.
+                }
+            }
+        }
+    }
+
     void GetWeapons(string category, out Array<string> weapons, out Array<double> weights) {
         foreach (pack : dlcs) {
             let d = FindDLC(pack);
@@ -220,6 +236,12 @@ class WeightedRandomSpawner : RandomSpawner {
     }
 }
 
+class DLCModSpawner : WeightedRandomSpawner {
+    override void PopList (DLCBrain brain, out Array<string> items, out Array<double> weights) {
+        brain.GetGenericItem("WeaponMod",items, weights);
+    }
+}
+
 class DLCMonsterSpawner : WeightedRandomSpawner {
     // Like the WeaponSpawner, but for monsters.
     string category;
@@ -286,6 +308,60 @@ class DLCPack : Thinker Abstract {
     abstract void setup(); // Add weapons and monsters to the pack.
 }
 
+class SimpleAmmoPack : Inventory replaces Backpack {
+    // Upon pickup, increases the player's ammo maximums.
+    // Spawns a DLCModSpawner sometimes, too.
+    int clipinc;
+    int shellinc;
+    int rocketinc;
+    int cellinc;
+
+    Property AmmoInc: clipinc,shellinc,rocketinc,cellinc;
+
+    default {
+        Inventory.MaxAmount -1; // Never actually stays in the inventory.
+        Inventory.PickupMessage "Ammo Pack!";
+        +Inventory.AUTOACTIVATE;
+        SimpleAmmoPack.AmmoInc 40,10,10,60; // a 20% increase over base
+    }
+
+    override bool Use(bool pickup) {
+        // Get current capacity, and BackpackAmount.
+        int clipmax = owner.GetAmmoCapacity("Clip");
+        int shellmax = owner.GetAmmoCapacity("Shell");
+        int rocketmax = owner.GetAmmoCapacity("RocketAmmo");
+        int cellmax = owner.GetAmmoCapacity("Cell");
+        int clipgive = GetDefaultByType("Clip").backpackamount;
+        int shellgive = GetDefaultByType("Shell").backpackamount;
+        int rocketgive = GetDefaultByType("RocketAmmo").backpackamount;
+        int cellgive = GetDefaultByType("Cell").backpackamount;
+        // Set the capacity.
+        owner.SetAmmoCapacity("Clip",clipmax+clipinc);
+        owner.SetAmmoCapacity("Shell",shellmax+shellinc);
+        owner.SetAmmoCapacity("RocketAmmo",rocketmax+rocketinc);
+        owner.SetAmmoCapacity("Cell",cellmax+cellinc);
+        // And give the ammo.
+        owner.GiveInventory("Clip",clipgive);
+        owner.GiveInventory("Shell",shellgive);
+        owner.GiveInventory("RocketAmmo",rocketgive);
+        owner.GiveInventory("Cell",cellgive);
+
+        amount--;
+
+        return true;
+    }
+
+    override void PostBeginPlay() {
+        Super.PostBeginPlay();
+        A_SpawnItemEX("DLCModSpawner",frandom(4,8),angle:frandom(0,360));
+    }
+
+    states {
+        Spawn:
+            BPAK A -1;
+    }
+}
+
 ////////
 // DLC GOES HERE
 ////////
@@ -308,6 +384,9 @@ class BasePack : DLCPack {
         // Monsters
         monsters.push("PistolZombie");
         monsters.push("ShotZombie");
+        // Weapon mods
+        items.push("BleedMod");
+        items.push("ImpactMod");
     }
 }
 
