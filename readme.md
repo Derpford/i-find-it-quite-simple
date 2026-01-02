@@ -110,6 +110,9 @@ Unlocked with the Final Armor pack.
 - Praetor Suit: 100% absorption. Straightforward and simple, like ripping and tearing. Gives 100 AP on pickup.
 - Berserk Suit: 33% absorption. Dealing and taking damage generates all three essence types.
 
+## Kill Aura
+An unlockable feature. Enemies below a certain health threshold take damage over time when near you. At higher levels, you can sprint through crowds of zombies. (Visuals on the Kill Aura TBD)
+
 ## Weapon Mods
 Each weapon can have two mods applied to it. Mods can be removed at will using the Mod Remover Tool (which removes all mods on the weapon, dropping them in front of you).
 
