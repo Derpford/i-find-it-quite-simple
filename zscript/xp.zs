@@ -85,23 +85,50 @@ class StatBlock : Inventory {
     }
 
     double StatMultiplier(double stat) {
-        return (statbase+stat) / statbase;
+        return StatMultComplex(stat,statbase);
+    }
+
+    double StatMultComplex(double stat, double base) {
+        return (base+stat) / base;
+    }
+
+    double StatDivComplex(double stat, double base) {
+        return base / (stat+base);
     }
 
     override void ModifyDamage(int dmg, name type, out int new, bool passive, Actor inf, Actor src, int flags) {
         double ddmg = dmg;
         if (passive) {
-            // Modify incoming damage based on defense. At 100 def, damage taken is normal.
+            // Modify incoming damage based on defense. At def = damage, damage taken is halved.
             // double mult = statbase / (statbase + def);
             // new = floor(ddmg * mult);
-            // DEF rework in progress.
+            if (end > 0) {
+                double mult = StatDivComplex(end,dmg);
+                new = floor (ddmg * mult);
+                console.printf("Endurance multiplier %0.1f",mult);
+            }
 
         } else {
             // Outgoing damage is increased based on both ATK and AIM. 
-            // ATK is a straight multiplier. AIM adds a randomized exponent(!).
-            double expo = StatMultiplier(frandom(0,aim));
+            // ATK is a straight multiplier. AIM is crit chance. Multicrits are possible, at a 1/10 rate per crit...
+            // Crit continues until the roll fails.
+            double crit = aim;
+            double cmult = 1.0;
+            bool cancrit = true;
+            double roll = frandom(0,100);
+            while (cancrit) {
+                if (roll < crit) {
+                    cmult += 0.5;
+                    crit *= 0.1;
+                    type = "Critical";
+                } else {
+                    cancrit = false;
+                }
+            }
             double dmult = StatMultiplier(atk);
-            new = floor((ddmg * dmult) ** expo);
+            console.printf("Crit multiplier %0.1f",cmult);
+            console.printf("Attack multiplier %0.1f",cmult);
+            new = floor((ddmg * dmult) * cmult);
         }
     }
 }
