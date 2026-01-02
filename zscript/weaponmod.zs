@@ -11,6 +11,10 @@ class WeaponMod : Inventory {
         -Inventory.AUTOACTIVATE;
     }
 
+    override string PickupMessage() {
+        return "Weapon Mod: " .. GetTag();
+    }
+
     override bool Use(bool pick) {
         SimpleWeapon wep = SimpleWeapon(owner.player.readyweapon);
         if (wep) {
@@ -40,6 +44,7 @@ class ExplosiveMod : WeaponMod {
 
     default {
         WeaponMod.ShotMod "ExplosiveShots";
+        Tag "Explosive Bullets";
     }
 
     override void Tick() {
@@ -56,7 +61,7 @@ class ExplosiveMod : WeaponMod {
 
     states {
         Spawn:
-            ROCK A -1;
+            MODY A -1;
             Stop;
     }
 }
@@ -87,6 +92,11 @@ class EShotExplosion: Actor {
 }
 
 class RipperMod : WeaponMod {
+    
+    default {
+        Tag "Ripper Bullets";
+    }
+
     override void OnFire(Actor proj) {
         console.printf("Appled RIPPER");
         proj.bRIPPER = true;
@@ -99,7 +109,7 @@ class RipperMod : WeaponMod {
 
     states {
         Spawn:
-            CELP A -1;
+            MODG A -1;
             Stop;
     }
 }
@@ -108,11 +118,12 @@ class RipperMod : WeaponMod {
 class BleedMod : WeaponMod {
     default {
         WeaponMod.ShotMod "BleedShots";
+        Tag "Hollow Point";
     }
 
     states {
         Spawn:
-            PSTR A -1;
+            MODR A -1;
     }
 }
 
@@ -136,5 +147,23 @@ class Bleed : Inventory {
         if (owner.GetAge() % 7 == 0) { // 5/s
             owner.DamageMobj(self,self,amount,"Bleed",DMG_NO_PAIN|DMG_THRUSTLESS);
         }
+    }
+}
+
+class ImpactMod : WeaponMod {
+    default {
+        WeaponMod.ShotMod "ImpactShots";
+        Tag "High-Impact Rounds";
+    }
+
+    states {
+        Spawn:
+            MODT A -1;
+    }
+}
+
+class ImpactShots : ShotModifier {
+    override void OwnerDied() {
+        owner.A_RadiusThrust(500,128,RTF_AFFECTSOURCE|RTF_THRUSTZ);
     }
 }
