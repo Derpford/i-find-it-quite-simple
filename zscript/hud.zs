@@ -159,8 +159,11 @@ class SimpleHud : BaseStatusBar {
 				if (w.NextInv()) {
 					DrawInventoryIcon(w.NextInv(),invpos+(16,-2),cbarflags,0.5);
 				}
-
+                int wamt = GetAmount(w.GetClassName());
 				DrawInventoryIcon(w,invpos+(0,-invticfrac),cbarflags);
+                if (wamt > 1) {
+                    DrawString(SmallFont,FormatNumber(wamt),invpos+(8,-4-invticfrac),cbarflags);
+                }
 			}
             
             // Score.
