@@ -9,7 +9,7 @@ class DoubleBarrel : SimpleWeapon {
         SimpleWeapon.AmmoDrop "Shell";
         Weapon.AmmoUse1 2;
         Weapon.AmmoGive1 2;
-        Weapon.AmmoUse2 4;
+        Weapon.AmmoUse2 2;
         
         SimpleWeapon.Mag -1;
     }
@@ -87,7 +87,7 @@ class DragonBreathBlast : Actor {
         A_Explode(10,range,0,fulldamagedistance:range);
         if (bNOGRAVITY) {
             if (invoker.vel.length() > 10) {
-                invoker.vel = invoker.vel.unit() * (invoker.vel.length() * 0.9);
+                invoker.vel = invoker.vel.unit() * (invoker.vel.length() * 0.95);
             } else {
                 bNOGRAVITY = false;
             }
